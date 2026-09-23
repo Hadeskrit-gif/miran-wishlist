@@ -407,7 +407,7 @@ const ITEMS = [
 ITEMS.forEach(i => { i.id = i.id || i.img.replace(/\D/g,""); });
 
 /* ===== БРОНЬ (Google Таблица через Apps Script) ===== */
-const API = "";  // URL веб-приложения Apps Script (…/exec)
+const API = "https://script.google.com/macros/s/AKfycbyKPOH8HeaRpCUUGjMcXuYsOmcSlJpW_ujOccxZT2Wxy1VFxFRvv_rIhVHO8lSn5XPa/exec";  // URL веб-приложения Apps Script (…/exec)
 let reserved = new Set();
 let mine = new Set();
 try { mine = new Set(JSON.parse(localStorage.getItem("wl-mine") || "[]")); } catch(e){}
