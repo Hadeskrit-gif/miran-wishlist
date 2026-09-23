@@ -423,6 +423,7 @@ async function loadReserved(){
 
 const WB = q => "https://www.wildberries.kg/catalog/0/search.aspx?search=" + encodeURIComponent(q);
 const OZ = q => "https://www.ozon.ru/search/?text=" + encodeURIComponent(q);
+const TM = q => "https://www.temu.com/search_result.html?search_key=" + encodeURIComponent(q);
 
 let activeCat = "all";
 try { activeCat = localStorage.getItem("wl-cat") || "all"; } catch(e){}
@@ -476,7 +477,8 @@ function card(i){
   if (i.q && !isTaken(i)){
     const w = el("a","shop","Wildberries"); w.href=WB(i.q); w.target="_blank"; w.rel="noopener";
     const o = el("a","shop","Ozon"); o.href=OZ(i.q); o.target="_blank"; o.rel="noopener";
-    f.append(w,o);
+    const m = el("a","shop","Temu"); m.href=TM(i.q); m.target="_blank"; m.rel="noopener";
+    f.append(w,o,m);
   }
   if (isTaken(i)){ const m = mine.has(i.id); f.append(el("span","taken-pill"+(m?" mine":""), m ? "✓ Забронировано вами" : "✓ Забронировано")); }
   else { const b = el("button","pick","Забронировать"); b.type="button"; b.onclick=()=>openSheet(i); f.append(b); }
