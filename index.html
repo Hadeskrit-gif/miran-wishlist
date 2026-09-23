@@ -404,7 +404,7 @@ const ITEMS = [
   {cat:"mom", img:"img/53.jpg", t:"Уходовая косметика", d:"Любимые марки лучше уточнить у Бориса.", p:"2 000–6 000", q:"", note:"Марку спросите у Бориса"},
 ];
 
-ITEMS.forEach(i => { i.id = i.id || i.img.replace(/\D/g,""); });
+ITEMS.forEach(i => { i.id = i.id || "i" + i.img.replace(/\D/g,""); });  // буква в начале, чтобы Google Таблица не превратила "00" в число 0
 
 /* ===== БРОНЬ (Google Таблица через Apps Script) ===== */
 const API = "https://script.google.com/macros/s/AKfycbyKPOH8HeaRpCUUGjMcXuYsOmcSlJpW_ujOccxZT2Wxy1VFxFRvv_rIhVHO8lSn5XPa/exec";  // URL веб-приложения Apps Script (…/exec)
