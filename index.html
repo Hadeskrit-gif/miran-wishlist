@@ -1,0 +1,569 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head><body>
+<title>Миранчику годик</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Caveat:wght@600;700&family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Одна праздничная тема (как бумажное приглашение) — намеренно без тёмного варианта */
+:root{
+  color-scheme:light;
+  --sky:#E4F2FB; --sky-deep:#CFE7F7; --paper:#FFFFFF; --ink:#26325C; --muted:#5D6A8A; --line:#D6E3EF;
+  --coral:#FF6F61; --sun:#FFC43D; --mint:#3FBF9B; --lilac:#8E7CF0; --pink:#FF8FB8; --giraffe:#F7B541; --spot:#D9822B;
+  --taken:#EEF3F7; --taken-ink:#8A96AE;
+  --display:"Comfortaa","Arial Rounded MT Bold",system-ui,sans-serif;
+  --script:"Caveat","Segoe Print","Comic Sans MS",cursive;
+  --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--sky)}
+body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 72px;position:relative;overflow-x:hidden}
+.wrap{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+a{color:var(--ink)}
+:focus-visible{outline:3px solid var(--lilac);outline-offset:2px}
+
+/* конфетти на фоне */
+.confetti{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.confetti i{position:absolute;display:block;border-radius:2px;opacity:.55}
+
+/* флажки-гирлянда */
+.bunting{position:relative;height:74px;margin-inline:-16px;overflow:hidden}
+.bunting svg{position:absolute;inset:0;width:100%;height:100%}
+.flags{position:absolute;left:0;right:0;top:10px;display:flex;justify-content:space-between;padding-inline:8px}
+.flags span{width:34px;height:40px;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0}
+
+/* шапка-приглашение */
+.hero{position:relative;background:var(--paper);border-radius:32px;padding:34px 34px 30px;margin-top:4px;
+  display:grid;grid-template-columns:1.15fr .85fr;gap:12px;align-items:center;
+  box-shadow:0 2px 0 var(--sky-deep),0 18px 40px -22px rgba(38,50,92,.35);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:12px;border:2px dashed var(--sky-deep);border-radius:24px;pointer-events:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral)}
+.eyebrow::before,.eyebrow::after{content:"✦";color:var(--sun)}
+.invite{font-family:var(--script);font-size:clamp(30px,5vw,44px);line-height:1;color:var(--lilac);margin:14px 0 0}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.6vw,56px);line-height:1.02;margin:4px 0 14px;text-wrap:balance;letter-spacing:-.01em}
+h1 .num{display:inline-block;font-size:1.5em;line-height:.8;vertical-align:-.12em;
+  background:linear-gradient(160deg,#FFE08A 0%,var(--sun) 40%,#F29A1E 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(217,130,43,.35))}
+.lead{max-width:52ch;color:var(--muted);margin:0}
+.lead b{color:var(--ink);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{font-size:14px;padding:7px 14px;border-radius:999px;background:var(--sky);font-variant-numeric:tabular-nums;color:var(--ink)}
+.tag strong{font-weight:700;color:var(--coral)}
+.scene{position:relative;min-height:320px}
+.scene svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.float{animation:none}
+@media (prefers-reduced-motion:no-preference){
+  .float{animation:bob 5s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+  .float.b{animation-duration:6.2s;animation-delay:-2s}
+  .float.c{animation-duration:4.4s;animation-delay:-1s}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+  .flags span{animation:sway 3.6s ease-in-out infinite}
+  .flags span:nth-child(even){animation-delay:-1.8s}
+  @keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+}
+
+/* как это работает — три открытки */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}
+.how div{background:var(--paper);border-radius:22px;padding:18px 20px 18px 64px;position:relative}
+.how div::before{content:attr(data-n);position:absolute;left:16px;top:16px;width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;font-family:var(--display);font-weight:700;color:#fff;background:var(--c)}
+.how h3{font-family:var(--display);font-size:15px;font-weight:700;margin:0 0 4px}
+.how p{margin:0;font-size:14px;color:var(--muted)}
+
+/* фильтры */
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;padding-block:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px;
+  background:linear-gradient(var(--sky) 80%,rgba(228,242,251,0))}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:14px;font-weight:600;padding:8px 15px;border-radius:999px;border:2px solid transparent;background:var(--paper);color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--sky-deep)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chip .n{opacity:.55;margin-left:5px;font-variant-numeric:tabular-nums}
+.spacer{flex:1}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;background:var(--paper);padding:7px 14px;border-radius:999px}
+.toggle input{accent-color:var(--coral);width:16px;height:16px;margin:0}
+
+/* категории и ленты */
+section.cat{margin-bottom:40px;--c:var(--coral)}
+.cat-dev{--c:var(--coral);--c-soft:#FFE6E3}
+.cat-move{--c:var(--mint);--c-soft:#DDF5EC}
+.cat-book{--c:var(--lilac);--c-soft:#ECE8FD}
+.cat-prac{--c:#E9A800;--c-soft:#FFF2CC}
+.cat-mom{--c:var(--pink);--c-soft:#FFE6EF}
+.cat-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}
+.ribbon{position:relative;display:inline-block;font-family:var(--display);font-weight:700;font-size:20px;color:#fff;background:var(--c);
+  padding:8px 26px;margin:0 14px;line-height:1.2}
+.ribbon::before,.ribbon::after{content:"";position:absolute;top:6px;bottom:-6px;width:22px;background:var(--c);filter:brightness(.82);z-index:-1}
+.ribbon::before{left:-14px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%,40% 50%)}
+.ribbon::after{right:-14px;clip-path:polygon(0 0,100% 0,60% 50%,100% 100%,0 100%)}
+.ribbon-wrap{position:relative;isolation:isolate}
+.cat-head p{margin:0;font-family:var(--script);font-size:22px;line-height:1.1;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+
+.item{background:var(--paper);border-radius:20px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;position:relative;
+  box-shadow:0 1px 0 var(--sky-deep)}
+.item::before{content:"";position:absolute;left:18px;right:18px;top:0;height:5px;border-radius:0 0 5px 5px;background:var(--c);z-index:1}
+.item .ph{display:block;width:calc(100% + 32px);max-width:none;aspect-ratio:1/1;height:auto;object-fit:cover;margin:-16px -16px 4px;border-radius:20px 20px 0 0;background:var(--sky)}
+.item.taken .ph{filter:grayscale(1);opacity:.55}
+.item .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-top:4px}
+.item h4{margin:0;font-size:16px;font-weight:600;line-height:1.3;text-wrap:balance}
+.price{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;white-space:nowrap;padding:3px 9px;border-radius:999px;background:var(--c-soft);color:var(--ink)}
+.item p{margin:0;font-size:14px;color:var(--muted)}
+.note{font-size:13px;padding:6px 10px;border-radius:10px;background:var(--sky);color:var(--ink)}
+.note::before{content:"☝ "}
+.foot{margin-top:auto;padding-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.foot a.shop{font-size:13px;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:999px;background:var(--sky);color:var(--ink)}
+.foot a.shop:hover{background:var(--sky-deep)}
+.pick{font:inherit;font-size:13px;font-weight:700;margin-left:auto;padding:7px 14px;border-radius:999px;border:0;background:var(--c);color:#fff;cursor:pointer;
+  box-shadow:0 3px 0 rgba(38,50,92,.18)}
+.pick:hover{filter:brightness(1.05)}
+.pick:active{transform:translateY(2px);box-shadow:none}
+.cat-prac .pick{color:var(--ink)}
+.big{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--ink);background:var(--sun);padding:3px 9px;border-radius:999px;align-self:flex-start;margin-top:4px}
+.big::before{content:"🎈 "}
+
+.item.taken{background:var(--taken);box-shadow:none}
+.item.taken::before{background:var(--line)}
+.item.taken h4,.item.taken p{color:var(--taken-ink)}
+.item.taken h4{text-decoration:line-through;text-decoration-thickness:1px}
+.item.taken .price{background:transparent;color:var(--taken-ink)}
+.taken-pill{margin-left:auto;font-size:13px;font-weight:700;color:var(--taken-ink)}
+
+/* не дарить */
+.dont{background:var(--paper);border-radius:24px;padding:22px 24px;margin-top:8px;position:relative;
+  background-image:repeating-linear-gradient(135deg,transparent 0 14px,rgba(255,111,97,.05) 14px 28px)}
+.dont h2{font-family:var(--display);font-size:20px;margin:0 0 12px;color:var(--coral)}
+.dont ul{margin:0;padding-left:20px;display:grid;gap:8px}
+.dont li{max-width:72ch}
+.dont small{color:var(--muted)}
+
+.sign{text-align:center;font-family:var(--script);font-size:28px;color:var(--lilac);margin-top:32px}
+
+/* окно «Хочу подарить» */
+.sheet{position:fixed;inset:0;background:rgba(38,50,92,.4);display:flex;align-items:flex-end;justify-content:center;z-index:20;padding:16px}
+.sheet[hidden]{display:none}
+.sheet .box{background:var(--paper);color:var(--ink);border-radius:26px;max-width:460px;width:100%;padding:24px;display:grid;gap:12px;margin-bottom:env(safe-area-inset-bottom,0px);
+  border-top:8px solid var(--sun)}
+@media (min-width:600px){.sheet{align-items:center}}
+.box h3{font-family:var(--display);font-size:20px;margin:0}
+.box label{font-size:13px;color:var(--muted);display:grid;gap:4px}
+.box input,.box textarea{font:inherit;font-size:15px;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:var(--sky);color:var(--ink);width:100%}
+.box textarea{min-height:96px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px;border:0;background:var(--sky);color:var(--ink);cursor:pointer}
+.btn.primary{background:var(--coral);color:#fff;box-shadow:0 3px 0 rgba(38,50,92,.18)}
+.status{font-size:13px;color:#1E7A5E;min-height:1.2em}
+.status.err{color:#C4382B}
+.mini{display:flex;gap:12px;align-items:center;padding:10px;border-radius:16px;background:var(--sky)}
+.mini img{width:72px;height:72px;border-radius:12px;object-fit:cover;flex:none;background:#fff}
+.mini-t{font-weight:600;line-height:1.3}
+.mini-p{font-size:13px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
+.btn[disabled]{opacity:.6;cursor:progress}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:#fff;
+  padding:12px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 10px 30px -10px rgba(38,50,92,.5);max-width:calc(100% - 32px);text-align:center}
+.taken-pill.mine{color:var(--mint)}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;padding:26px 22px 22px}
+  .scene{min-height:250px;order:-1;margin:-6px -6px 0}
+  .how{grid-template-columns:1fr}
+  .spacer{display:none}
+  .flags span{width:24px;height:30px}
+}
+@media (prefers-reduced-motion:no-preference){.item{transition:transform .15s}.item:not(.taken):hover{transform:translateY(-2px)}}
+</style>
+
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="bunting" aria-hidden="true">
+    <svg viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 4 Q50 16 100 4" fill="none" stroke="#26325C" stroke-opacity=".35" stroke-width=".4" vector-effect="non-scaling-stroke"/></svg>
+    <div class="flags" id="flags"></div>
+  </div>
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">1 ноября 2026</div>
+      <p class="invite">Приглашаем на праздник!</p>
+      <h1>Миранчику <span class="num">1</span> годик</h1>
+      <p class="lead">Мы собрали то, что Мирану <b>правда пригодится</b> в ближайший год: игрушки по возрасту, вещи для движения, книжки, практичные мелочи и кое-что для мамы. Цены примерные, в сомах. Магазин и модель выбирайте сами.</p>
+      <div class="meta">
+        <span class="tag" id="countdown">до праздника …</span>
+        <span class="tag" id="freeCount">свободно …</span>
+      </div>
+    </div>
+
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 300 330" role="img">
+        <!-- шарики -->
+        <g class="float b">
+          <path d="M218 112 C212 160 236 200 214 262" fill="none" stroke="#26325C" stroke-opacity=".4" stroke-width="1.5"/>
+          <ellipse cx="220" cy="72" rx="34" ry="41" fill="#8E7CF0"/>
+          <ellipse cx="208" cy="56" rx="8" ry="13" fill="#fff" opacity=".35" transform="rotate(-20 208 56)"/>
+          <path d="M214 112 l6 -6 l6 6 z" fill="#8E7CF0"/>
+        </g>
+        <g class="float c">
+          <path d="M270 150 C262 190 280 220 252 268" fill="none" stroke="#26325C" stroke-opacity=".4" stroke-width="1.5"/>
+          <ellipse cx="270" cy="118" rx="26" ry="32" fill="#3FBF9B"/>
+          <ellipse cx="262" cy="106" rx="6" ry="10" fill="#fff" opacity=".35" transform="rotate(-20 262 106)"/>
+          <path d="M265 150 l5 -5 l5 5 z" fill="#3FBF9B"/>
+        </g>
+        <g class="float">
+          <path d="M160 88 C168 140 150 190 176 250" fill="none" stroke="#26325C" stroke-opacity=".4" stroke-width="1.5"/>
+          <ellipse cx="160" cy="52" rx="30" ry="37" fill="#FF6F61"/>
+          <ellipse cx="149" cy="38" rx="7" ry="12" fill="#fff" opacity=".35" transform="rotate(-20 149 38)"/>
+          <path d="M155 88 l5 -5 l5 5 z" fill="#FF6F61"/>
+        </g>
+
+        <!-- жирафик -->
+        <g transform="translate(20 20)">
+          <!-- хвост -->
+          <path d="M214 222 C228 232 232 250 226 266" fill="none" stroke="#D9822B" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="226" cy="270" rx="5" ry="8" fill="#7A4B2A"/>
+          <!-- задние ноги -->
+          <rect x="118" y="238" width="16" height="58" rx="8" fill="#E9A232"/>
+          <rect x="190" y="238" width="16" height="58" rx="8" fill="#E9A232"/>
+          <!-- тело -->
+          <ellipse cx="160" cy="226" rx="62" ry="36" fill="#F7B541"/>
+          <!-- передние ноги -->
+          <rect x="130" y="240" width="16" height="62" rx="8" fill="#F7B541"/>
+          <rect x="176" y="240" width="16" height="62" rx="8" fill="#F7B541"/>
+          <rect x="130" y="292" width="16" height="10" rx="4" fill="#7A4B2A"/>
+          <rect x="176" y="292" width="16" height="10" rx="4" fill="#7A4B2A"/>
+          <rect x="118" y="288" width="16" height="8" rx="4" fill="#6A3F22"/>
+          <rect x="190" y="288" width="16" height="8" rx="4" fill="#6A3F22"/>
+          <!-- шея -->
+          <path d="M108 222 L96 112 Q98 98 112 98 L126 100 Q138 104 136 118 L142 222 Z" fill="#F7B541"/>
+          <!-- грива -->
+          <path d="M134 112 q8 6 4 14 q8 6 4 14 q8 6 4 14 q8 6 4 14 q8 6 4 14 q8 6 4 14" fill="none" stroke="#D9822B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- пятна -->
+          <ellipse cx="140" cy="214" rx="11" ry="8" fill="#D9822B" opacity=".85"/>
+          <ellipse cx="172" cy="206" rx="9" ry="7" fill="#D9822B" opacity=".85"/>
+          <ellipse cx="192" cy="230" rx="10" ry="8" fill="#D9822B" opacity=".85"/>
+          <ellipse cx="156" cy="240" rx="8" ry="6" fill="#D9822B" opacity=".85"/>
+          <ellipse cx="117" cy="190" rx="7" ry="9" fill="#D9822B" opacity=".85"/>
+          <ellipse cx="116" cy="150" rx="6" ry="8" fill="#D9822B" opacity=".85"/>
+          <ellipse cx="124" cy="124" rx="5" ry="6" fill="#D9822B" opacity=".85"/>
+          <!-- голова -->
+          <g transform="rotate(-12 100 92)">
+            <!-- ухо -->
+            <ellipse cx="136" cy="78" rx="15" ry="7" fill="#F7B541" transform="rotate(24 136 78)"/>
+            <ellipse cx="137" cy="78" rx="9" ry="3.5" fill="#F4A6A0" transform="rotate(24 137 78)"/>
+            <!-- рожки -->
+            <line x1="112" y1="66" x2="116" y2="44" stroke="#E9A232" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="116" cy="42" r="6" fill="#7A4B2A"/>
+            <ellipse cx="104" cy="86" rx="34" ry="25" fill="#F7B541"/>
+            <ellipse cx="78" cy="98" rx="22" ry="16" fill="#FCD98A"/>
+            <circle cx="70" cy="95" r="2.6" fill="#7A4B2A"/>
+            <circle cx="82" cy="93" r="2.6" fill="#7A4B2A"/>
+            <path d="M68 106 Q78 114 90 106" fill="none" stroke="#7A4B2A" stroke-width="2.6" stroke-linecap="round"/>
+            <!-- глаз -->
+            <circle cx="106" cy="78" r="6" fill="#26325C"/>
+            <circle cx="108" cy="76" r="2" fill="#fff"/>
+            <path d="M99 70 Q106 66 113 70" fill="none" stroke="#26325C" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="112" cy="94" r="6" fill="#FF8FB8" opacity=".55"/>
+            <!-- колпак -->
+            <g transform="rotate(-8 96 60)">
+              <path d="M78 66 L100 8 L122 64 Q100 72 78 66 Z" fill="#FF6F61"/>
+              <path d="M92 30 L108 30 L111 38 L89 38 Z" fill="#FFC43D"/>
+              <path d="M85 48 L115 48 L118 56 L82 56 Z" fill="#FFC43D"/>
+              <circle cx="93" cy="24" r="2.2" fill="#fff"/><circle cx="104" cy="44" r="2.2" fill="#fff"/><circle cx="96" cy="60" r="2.2" fill="#fff"/>
+              <path d="M76 66 Q100 76 124 64" fill="none" stroke="#8E7CF0" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="100" cy="7" r="9" fill="#FFC43D"/>
+              <path d="M91 7 h18 M100 -2 v18 M94 1 l12 12 M106 1 l-12 12" stroke="#F29A1E" stroke-width="1.6"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <div class="how">
+    <div data-n="1" style="--c:var(--coral)"><h3>Выберите подарок</h3><p>Подарки с меткой «Забронировано» уже кто-то дарит.</p></div>
+    <div data-n="2" style="--c:var(--mint)"><h3>Забронируйте</h3><p>Нажмите «Забронировать» и укажите, как вас зовут. Мы увидим, кто что дарит.</p></div>
+    <div data-n="3" style="--c:var(--lilac)"><h3>Никаких повторов</h3><p>Подарок сразу помечается для всех гостей, и никто не купит его второй раз.</p></div>
+  </div>
+
+  <div class="controls" role="toolbar" aria-label="Фильтры">
+    <div id="chips" class="chips"></div>
+    <span class="spacer"></span>
+    <label class="toggle"><input type="checkbox" id="onlyFree"> Только свободные</label>
+  </div>
+
+  <main id="list"></main>
+
+  <aside class="dont">
+    <h2>Пожалуйста, не дарите</h2>
+    <ul>
+      <li><b>Ходунки, прыгунки и джамперы.</b> Их запретил ортопед. <small>Такие вещи нагружают тазобедренные суставы, а мы за ними сейчас наблюдаем.</small></li>
+      <li><b>Каталки-толкалки и толокары «на сейчас».</b> Только когда Миран пойдёт сам, и только модели, где он стоит ногами на полу.</li>
+      <li><b>Мелкие детали, магниты, батарейки-таблетки.</b> Он всё пробует на зуб.</li>
+      <li><b>Мягкие игрушки в большом количестве.</b> Одну любимую можно, а пятнадцать уже пылесборник 🙂</li>
+    </ul>
+  </aside>
+
+  <p class="sign">Ждём вас! Миран, Борис и Катерина</p>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <form class="box" id="bookForm" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" novalidate>
+    <h3 id="sheetTitle">Бронируем подарок</h3>
+    <div class="mini" id="mini">
+      <img id="miniImg" alt="" width="72" height="72">
+      <div><div class="mini-t" id="miniT"></div><div class="mini-p" id="miniP"></div></div>
+    </div>
+    <label for="fromName">Как вас зовут
+      <input id="fromName" name="fromName" placeholder="Например: тётя Ануш" autocomplete="name" maxlength="100" required>
+    </label>
+    <div class="status" id="status" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn primary" id="bookBtn" type="submit">Забронировать</button>
+      <button class="btn" id="closeBtn" type="button">Отмена</button>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+/* ===== ДАННЫЕ ВИШЛИСТА =====
+   taken: "" = свободно; иначе строка, кто дарит (на странице — «Забронировано»). Брони гостей приходят из Google Таблицы через API..
+   q: поисковый запрос для Wildberries / Ozon. big: крупный подарок (можно скинуться). */
+const CATS = [
+  {id:"dev",  name:"Развивающие", hint:"руки, логика, звук"},
+  {id:"move", name:"Для движения", hint:"ползать, лазать, вставать"},
+  {id:"book", name:"Книжки", hint:"картонные и тактильные"},
+  {id:"prac", name:"Практичное", hint:"то, что точно пойдёт в дело"},
+  {id:"mom",  name:"Для мамы", hint:"год Катерины тоже был непростым"},
+];
+const ITEMS = [
+  // Развивающие
+  {cat:"dev", img:"img/00.jpg", t:"Сортер", d:"Деревянный куб, «почтовый ящик» или сортер-овощи с прорезями.", p:"500–2 500", q:"сортер деревянный для малышей"},
+  {cat:"dev", img:"img/01.jpg", t:"Пирамидка", d:"Классическая с кольцами или радуга-арка из дерева.", p:"500–4 000", q:"пирамидка деревянная для малышей"},
+  {cat:"dev", img:"img/02.jpg", t:"Бизиборд", d:"Замочки, выключатели, колёсики. Настенный или кубом.", p:"2 000–6 000", q:"бизиборд для малышей 1 год", big:true},
+  {cat:"dev", img:"img/03.jpg", t:"Стучалка с молоточком и шариками", d:"Забить шарик, чтобы он скатился вниз. Причина и следствие.", p:"800–2 000", q:"стучалка с молоточком и шариками"},
+  {cat:"dev", img:"img/04.jpg", t:"Музыкальный столик", d:"Играет, когда нажимаешь кнопки. У такого столика удобно учиться стоять.", p:"~2 000", q:"музыкальный столик для малышей"},
+  {cat:"dev", img:"img/05.jpg", t:"Ксилофон или детский синтезатор", d:"Можно набор: ксилофон, маракасы, бубен.", p:"1 000–3 000", q:"ксилофон детский деревянный"},
+  {cat:"dev", img:"img/06.jpg", t:"Детская барабанная установка", d:"Громко, зато как счастлив будет 🙂", p:"~2 700", q:"детская барабанная установка"},
+  {cat:"dev", img:"img/07.jpg", t:"Крупные фигурки животных", d:"Ферма, Африка, Арктика, динозавры. Фигурки крупные, чтобы нельзя было проглотить.", p:"500–1 000", q:"фигурки животных для малышей крупные набор"},
+  {cat:"dev", img:"img/08.jpg", t:"Карточки «Звукоподражание»", d:"«Кто как говорит»: первые слова и звуки.", p:"~560", q:"карточки звукоподражание для малышей", u:"https://www.wildberries.kg/catalog/774807341/detail.aspx?size=1137202347", uName:"Вот эти"},
+  {cat:"dev", img:"img/09.jpg", t:"Карточки Домана", d:"Крупные картинки для первых слов.", p:"~550", q:"карточки домана", u:"https://www.wildberries.kg/catalog/97265945/detail.aspx?size=154243211", uName:"Вот эти"},
+  {cat:"dev", img:"img/10.jpg", t:"Крупный конструктор для малышей", d:"Mega Bloks First Builders или аналог, от 1 года.", p:"2 000–5 000", q:"mega bloks first builders"},
+  {cat:"dev", img:"img/11.jpg", t:"Игрушки для ванной", d:"Стаканчики-пересыпалки, мельница, водопад на присосках.", p:"500–2 000", q:"игрушки для ванной малыш пересыпалки"},
+  {cat:"dev", img:"img/12.jpg", t:"Сенсорные мячики", d:"Набор разной фактуры и размера.", p:"500–1 500", q:"сенсорные мячики для малышей набор"},
+  {cat:"dev", img:"img/13.jpg", t:"Машинка-каталка на верёвочке", d:"Катать за собой, не ездить на ней.", p:"800–2 500", q:"каталка на веревочке деревянная"},
+
+  // Движение
+  {cat:"move", img:"img/14.jpg", t:"Мягкие модули (горка + ступеньки)", d:"Лазать и сползать дома, безопасно для первых падений.", p:"10 000–30 000", q:"мягкие модули горка для малышей", big:true},
+  {cat:"move", img:"img/15.jpg", t:"Арка или треугольник Пиклер", d:"Лазать и держать равновесие, хватит до трёх–четырёх лет.", p:"8 000–25 000", q:"треугольник пиклер с горкой", big:true, note:"Перед покупкой спросим ортопеда"},
+  {cat:"move", img:"img/16.jpg", t:"Складной туннель", d:"Ползать насквозь. Ортопед советовал побольше двигаться в разных положениях, это как раз оно.", p:"1 500–4 000", q:"туннель детский складной"},
+  {cat:"move", img:"img/17.jpg", t:"Вигвам или палатка-домик", d:"Своё укрытие для игр.", p:"1 000–1 500", q:"вигвам детский палатка домик"},
+  {cat:"move", img:"img/18.jpg", t:"Сухой бассейн с шариками", d:"Бассейн с мягкими бортиками. Шарики отдельно, 100–200 штук, стоят 200–500 сом.", p:"3 000–10 000", q:"сухой бассейн с шариками детский"},
+  {cat:"move", img:"img/19.jpg", t:"Детская качеля", d:"Подвесная для дома, в дверной проём, или для улицы.", p:"1 000–1 500", q:"качели детские подвесные для малышей"},
+  {cat:"move", img:"img/20.jpg", t:"Массажные полусферы для ног", d:"Пупырчатые «кочки»: наступать и ходить по ним, стопам полезно.", p:"800–1 600", q:"массажные полусферы для ног детские"},
+  {cat:"move", img:"img/21.jpg", t:"Балансировочная дорожка", d:"Модульная тропа из камней и кочек.", p:"1 800–2 200", q:"балансировочная дорожка для детей", note:"Когда начнёт ходить сам"},
+  {cat:"move", img:"img/22.jpg", t:"Толстый коврик-пазл", d:"От 2 см толщиной, на весь игровой угол.", p:"2 000–6 000", q:"коврик пазл детский толстый 2 см"},
+  {cat:"move", img:"img/23.jpg", t:"Толокар, на вырост", d:"Модель, где Миран стоит ногами на полу. Пригодится, когда он пойдёт сам.", p:"2 000–4 000", q:"толокар для малышей от 1 года", note:"Только после первых самостоятельных шагов"},
+  {cat:"move", img:"img/24.jpg", t:"Трёхколёсный велосипед с ручкой и козырьком", d:"Родитель везёт его за ручку, потом Миран будет крутить педали сам.", p:"~7 500", q:"детский велосипед трехколесный с ручкой и козырьком", big:true},
+  {cat:"move", img:"img/25.jpg", t:"Санки", d:"Простые или санки-коляска со спинкой и ремнями. Зима в Бишкеке скоро.", p:"1 000–6 000", q:"санки детские со спинкой"},
+
+  // Книжки
+  {cat:"book", img:"img/26.jpg", t:"Книжки с окошками", d:"«Кто спрятался?», анатомия с окошками, поднимающиеся створки.", p:"300–900", q:"книжка с окошками для малышей"},
+  {cat:"book", img:"img/27.jpg", t:"«Кто наделал на голову кроту?»", d:"Классика, которую малыши просят читать по сто раз.", p:"500–900", q:"кто наделал на голову кроту книга"},
+  {cat:"book", img:"img/28.jpg", t:"Тактильные и фетровые книжки", d:"Шершавое, мягкое, блестящее. Например, фетровая книжка «Дом».", p:"500–1 000", q:"тактильная книжка из фетра для малышей"},
+  {cat:"book", img:"img/29.jpg", t:"Виммельбухи", d:"«Год в лесу», «Транспорт». Большие картинки, которые можно рассматривать бесконечно.", p:"300–350", q:"виммельбух год в лесу"},
+  {cat:"book", img:"img/30.jpg", t:"Книга-пианино", d:"Клавиши и мелодии. Цвет любой.", p:"2 000–3 500", q:"книга пианино для малышей"},
+  {cat:"book", img:"img/31.jpg", t:"Книжки со звуками", d:"Животные, транспорт, песенки.", p:"800–2 000", q:"книжка со звуками для малышей"},
+  {cat:"book", img:"img/32.jpg", t:"Непромокаемые книжки для ванной", d:"Мягкие, можно мочить и жевать.", p:"300–800", q:"книжка для ванной малыш"},
+  {cat:"book", img:"img/33.jpg", t:"Фронтальный книжный стеллаж", d:"Монтессори-полка обложками вперёд, чтобы Миран сам выбирал книжку.", p:"3 000–8 000", q:"стеллаж для книг монтессори фронтальный"},
+
+  // Практичное
+  {cat:"prac", img:"img/34.jpg", t:"Детский столик со стульчиком", d:"Для рисования, игр и еды «как взрослый». Можно только стол.", p:"~3 800", q:"детский столик и стульчик монтессори", u:"https://mobile.yangkeduo.com/goods.html?ps=WyV42TcXiR", uName:"Pinduoduo"},
+  {cat:"prac", img:"img/35.jpg", t:"Ступеньки помощника", d:"Башня, чтобы стоять рядом со взрослыми у кухонного стола. На вырост.", p:"4 000–10 000", q:"башня помощника детская ступеньки", big:true},
+  {cat:"prac", img:"img/36.jpg", t:"Первая обувь для ходьбы", d:"С жёстким задником и гибкой подошвой. Размер спросите у нас.", p:"2 000–5 000", q:"первая обувь для малышей жесткий задник", note:"Размер уточните у Катерины"},
+  {cat:"prac", img:"img/37.jpg", t:"Зимний комбинезон на рост 86–92", d:"Плотный, со съёмной подстёжкой.", p:"5 000–15 000", q:"зимний комбинезон детский 86", big:true},
+  {cat:"prac", img:"img/38.jpg", t:"Одежда на рост 86–92", d:"Боди, штанишки, свитшоты. Любые хорошие базовые вещи.", p:"500–3 000", q:"одежда для малыша 86"},
+  {cat:"prac", img:"img/39.jpg", t:"Набор силиконовой посуды", d:"Тарелка на присоске, ложки, поильник-непроливайка.", p:"1 000–3 000", q:"силиконовая посуда для малышей набор присоска"},
+  {cat:"prac", img:"img/40.jpg", t:"Растущий стульчик для кормления", d:"Деревянный стульчик, который растёт вместе с ребёнком.", p:"8 000–25 000", q:"растущий стул для кормления деревянный", big:true},
+  {cat:"prac", img:"img/41.jpg", t:"Увлажнитель воздуха", d:"Главное, чтобы воду можно было доливать сверху.", p:"~4 500", q:"увлажнитель воздуха верхний залив"},
+  {cat:"prac", img:"img/42.jpg", t:"Складной горшок", d:"Дорожный, пригодится в поездках.", p:"1 200–1 500", q:"складной дорожный горшок детский"},
+  {cat:"prac", img:"img/43.jpg", t:"Зубная паста Elmex 0–2", d:"Детская, со фтором. Расходник, лишней не будет.", p:"~600", q:"elmex детская паста 0-2"},
+  {cat:"prac", img:"img/44.jpg", t:"Набор для игр в песке", d:"Ведёрко, совок, формочки. На весну.", p:"200–500", q:"набор для песочницы детский"},
+  {cat:"prac", img:"img/45.jpg", t:"Сертификат в детский магазин", d:"Если не хочется гадать. Любой номинал нас очень выручит.", p:"любая", q:""},
+
+  // Для мамы
+  {cat:"mom", img:"img/46.jpg", t:"Сертификат на массаж или в SPA", d:"Пара часов только для себя. Спина за этот год натаскалась.", p:"3 000–10 000", q:"", big:true},
+  {cat:"mom", img:"img/47.jpg", t:"Сертификат в салон красоты", d:"Маникюр, стрижка, брови, что захочется.", p:"2 000–6 000", q:""},
+  {cat:"mom", img:"img/48.jpg", t:"Семейная фотосессия", d:"Чтобы у нас были красивые фото, где мама тоже в кадре, а не только за камерой.", p:"5 000–15 000", q:"", big:true},
+  {cat:"mom", img:"img/49.jpg", t:"Украшение с именем или датой", d:"Кулон или браслет с гравировкой «Миран» или «01.11.2025».", p:"2 000–8 000", q:"кулон с гравировкой имени серебро"},
+  {cat:"mom", img:"img/50.jpg", t:"Шёлковая наволочка и маска для сна", d:"Раз сна мало, пусть он будет хотя бы приятным.", p:"1 500–4 000", q:"шелковая наволочка натуральный шелк"},
+  {cat:"mom", img:"img/51.jpg", t:"Уборка квартиры клининговой службой", d:"Один свободный день без швабры. Лучший подарок маме малыша.", p:"3 000–6 000", q:""},
+  {cat:"mom", img:"img/52.jpg", t:"Вечер без ребёнка", d:"Посидим с Мираном, пока родители сходят в кино или ресторан. Можно вместе с сертификатом в ресторан.", p:"бесценно", q:""},
+  {cat:"mom", img:"img/53.jpg", t:"Уходовая косметика", d:"Любимые марки лучше уточнить у Бориса.", p:"2 000–6 000", q:"", note:"Марку спросите у Бориса"},
+];
+
+ITEMS.forEach(i => { i.id = i.id || i.img.replace(/\D/g,""); });
+
+/* ===== БРОНЬ (Google Таблица через Apps Script) ===== */
+const API = "";  // URL веб-приложения Apps Script (…/exec)
+let reserved = new Set();
+let mine = new Set();
+try { mine = new Set(JSON.parse(localStorage.getItem("wl-mine") || "[]")); } catch(e){}
+const isTaken = i => !!i.taken || reserved.has(i.id);
+function saveMine(){ try{ localStorage.setItem("wl-mine", JSON.stringify([...mine])); }catch(e){} }
+async function loadReserved(){
+  if (!API) return;
+  try {
+    const j = await (await fetch(API, {cache:"no-store"})).json();
+    if (j && j.reserved){ reserved = new Set(j.reserved.map(String)); renderChips(); renderList(); }
+  } catch(e){}
+}
+
+const WB = q => "https://www.wildberries.kg/catalog/0/search.aspx?search=" + encodeURIComponent(q);
+const OZ = q => "https://www.ozon.ru/search/?text=" + encodeURIComponent(q);
+
+let activeCat = "all";
+try { activeCat = localStorage.getItem("wl-cat") || "all"; } catch(e){}
+let onlyFree = false;
+try { onlyFree = localStorage.getItem("wl-free") === "1"; } catch(e){}
+
+const $ = s => document.querySelector(s);
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+function renderChips(){
+  const box = $("#chips"); box.textContent = "";
+  const all = [{id:"all", name:"Все"}].concat(CATS);
+  all.forEach(c => {
+    const n = ITEMS.filter(i => (c.id==="all"||i.cat===c.id) && !isTaken(i)).length;
+    const b = el("button","chip"); b.type="button";
+    b.setAttribute("aria-pressed", String(activeCat===c.id));
+    b.append(c.name); const s=el("span","n",String(n)); b.append(s);
+    b.onclick = () => { activeCat=c.id; try{localStorage.setItem("wl-cat",c.id)}catch(e){}; renderChips(); renderList(); };
+    box.append(b);
+  });
+}
+
+function renderList(){
+  const main = $("#list"); main.textContent = "";
+  CATS.filter(c => activeCat==="all" || c.id===activeCat).forEach(c => {
+    let items = ITEMS.filter(i => i.cat===c.id);
+    if (onlyFree) items = items.filter(i => !isTaken(i));
+    items.sort((a,b) => isTaken(a) - isTaken(b));
+    if (!items.length) return;
+    const sec = el("section","cat cat-"+c.id);
+    const h = el("div","cat-head"); const rw = el("div","ribbon-wrap"); rw.append(el("h2","ribbon",c.name)); h.append(rw, el("p",null,c.hint)); sec.append(h);
+    const grid = el("div","grid");
+    items.forEach(i => grid.append(card(i)));
+    sec.append(grid); main.append(sec);
+  });
+  const free = ITEMS.filter(i=>!isTaken(i)).length;
+  $("#freeCount").innerHTML = "свободно <strong>"+free+"</strong> из "+ITEMS.length;
+}
+
+function card(i){
+  const a = el("article","item"+(isTaken(i)?" taken":""));
+  if (i.img){ const ph = el("img","ph"); ph.src=i.img; ph.alt=""; ph.loading="lazy"; ph.decoding="async"; ph.width=480; ph.height=480; a.append(ph); }
+  if (i.big && !isTaken(i)) a.append(el("span","big","Можно скинуться"));
+  const top = el("div","top"); top.append(el("h4",null,i.t), el("span","price",i.p+(i.p==="любая"?"":" с")));
+  a.append(top, el("p",null,i.d));
+  if (i.note && !isTaken(i)) a.append(el("div","note",i.note));
+  const f = el("div","foot");
+  if (i.u && !isTaken(i)){
+    const d = el("a","shop",i.uName||"Ссылка"); d.href=i.u; d.target="_blank"; d.rel="noopener"; f.append(d);
+  }
+  if (i.q && !isTaken(i)){
+    const w = el("a","shop","Wildberries"); w.href=WB(i.q); w.target="_blank"; w.rel="noopener";
+    const o = el("a","shop","Ozon"); o.href=OZ(i.q); o.target="_blank"; o.rel="noopener";
+    f.append(w,o);
+  }
+  if (isTaken(i)){ const m = mine.has(i.id); f.append(el("span","taken-pill"+(m?" mine":""), m ? "✓ Забронировано вами" : "✓ Забронировано")); }
+  else { const b = el("button","pick","Забронировать"); b.type="button"; b.onclick=()=>openSheet(i); f.append(b); }
+  a.append(f);
+  return a;
+}
+
+let current = null;
+function setStatus(msg, err){ const s=$("#status"); s.textContent=msg||""; s.classList.toggle("err", !!err); }
+function openSheet(i){
+  current = i; setStatus("");
+  $("#miniImg").src = i.img; $("#miniT").textContent = i.t; $("#miniP").textContent = i.p + (i.p==="любая" ? "" : " сом");
+  try { $("#fromName").value = localStorage.getItem("wl-name") || ""; } catch(e){}
+  $("#bookBtn").disabled = false; $("#sheet").hidden = false; $("#fromName").focus();
+}
+function closeSheet(){ $("#sheet").hidden = true; }
+let toastT;
+function toast(msg){ const el=$("#toast"); el.textContent=msg; el.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>el.hidden=true, 4000); }
+$("#fromName").addEventListener("input", () => { try{localStorage.setItem("wl-name",$("#fromName").value)}catch(e){} });
+$("#closeBtn").onclick = closeSheet;
+$("#sheet").addEventListener("click", e => { if (e.target.id==="sheet") closeSheet(); });
+document.addEventListener("keydown", e => { if (e.key==="Escape") closeSheet(); });
+$("#bookForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("#fromName").value.trim();
+  if (!name){ setStatus("Напишите, как вас зовут, чтобы мы знали, от кого подарок.", true); $("#fromName").focus(); return; }
+  if (!API){ setStatus("Бронь пока не подключена. Напишите Борису или Катерине.", true); return; }
+  const btn = $("#bookBtn"); btn.disabled = true; setStatus("Бронируем…");
+  try {
+    const res = await fetch(API, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({ id: current.id, title: current.t, name }) });
+    const j = await res.json();
+    if (j.reserved) reserved = new Set(j.reserved.map(String));
+    if (j.ok){
+      reserved.add(current.id); mine.add(current.id); saveMine();
+      closeSheet(); renderChips(); renderList();
+      toast("Готово! «" + current.t + "» забронирован за вами 🎈");
+    } else if (j.error === "taken"){
+      renderChips(); renderList();
+      setStatus("Этот подарок только что забронировал кто-то другой. Выберите, пожалуйста, другой.", true);
+    } else {
+      setStatus("Не получилось забронировать. Попробуйте ещё раз.", true); btn.disabled = false;
+    }
+  } catch(err){
+    setStatus("Нет связи с таблицей. Проверьте интернет и попробуйте ещё раз.", true); btn.disabled = false;
+  }
+});
+
+$("#onlyFree").checked = onlyFree;
+$("#onlyFree").onchange = e => { onlyFree = e.target.checked; try{localStorage.setItem("wl-free", onlyFree?"1":"0")}catch(err){}; renderList(); };
+
+(function countdown(){
+  const bd = new Date(2026,10,1); const now = new Date(); now.setHours(0,0,0,0);
+  const d = Math.round((bd - now)/86400000);
+  const words = n => { const m10=n%10, m100=n%100; if(m10===1&&m100!==11) return "день"; if(m10>=2&&m10<=4&&(m100<12||m100>14)) return "дня"; return "дней"; };
+  $("#countdown").innerHTML = d>0 ? "до праздника <strong>"+d+"</strong> "+words(d) : d===0 ? "<strong>сегодня праздник!</strong>" : "праздник прошёл 🎉";
+})();
+
+(function decor(){
+  const colors = ["#FF6F61","#FFC43D","#3FBF9B","#8E7CF0","#FF8FB8","#5AB0E8"];
+  const flags = document.getElementById("flags");
+  const n = Math.max(8, Math.min(22, Math.round(window.innerWidth / 52)));
+  for (let k = 0; k < n; k++){
+    const s = document.createElement("span");
+    const t = n > 1 ? k/(n-1) : .5;
+    s.style.background = colors[k % colors.length];
+    s.style.marginTop = (Math.sin(Math.PI*t) * 20).toFixed(1) + "px";
+    flags.append(s);
+  }
+  const box = document.getElementById("confetti");
+  let seed = 7; const rnd = () => (seed = (seed*9301+49297)%233280) / 233280;
+  for (let k = 0; k < 70; k++){
+    const i = document.createElement("i");
+    const w = 5 + rnd()*7;
+    i.style.left = (rnd()*100).toFixed(2) + "%";
+    i.style.top = (rnd()*100).toFixed(2) + "%";
+    i.style.width = w + "px"; i.style.height = (rnd() > .5 ? w : w*2.2) + "px";
+    i.style.background = colors[k % colors.length];
+    i.style.transform = "rotate(" + Math.round(rnd()*180) + "deg)";
+    if (rnd() > .6) i.style.borderRadius = "50%";
+    box.append(i);
+  }
+})();
+
+renderChips(); renderList();
+loadReserved();
+setInterval(loadReserved, 60000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) loadReserved(); });
+</script>
+</body></html>
