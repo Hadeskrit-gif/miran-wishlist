@@ -92,6 +92,9 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .cat-book{--c:var(--lilac);--c-soft:#ECE8FD}
 .cat-prac{--c:#E9A800;--c-soft:#FFF2CC}
 .cat-mom{--c:var(--pink);--c-soft:#FFE6EF}
+.cat-joint{--c:#F29A1E;--c-soft:#FFF2CC}
+.chip.joint{border-color:var(--sun)}
+.chip.joint[aria-pressed="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun)}
 .cat-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}
 .ribbon{position:relative;display:inline-block;font-family:var(--display);font-weight:700;font-size:20px;color:#fff;background:var(--c);
   padding:8px 26px;margin:0 14px;line-height:1.2}
@@ -433,12 +436,15 @@ try { onlyFree = localStorage.getItem("wl-free") === "1"; } catch(e){}
 const $ = s => document.querySelector(s);
 function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
 
+const JOINT = {id:"joint", name:"🎈 Можно совместно", hint:"крупные подарки, на которые удобно скинуться вместе"};
+const inGroup = (i, id) => id==="all" || (id==="joint" ? !!i.big : i.cat===id);
+
 function renderChips(){
   const box = $("#chips"); box.textContent = "";
-  const all = [{id:"all", name:"Все"}].concat(CATS);
+  const all = [{id:"all", name:"Все"}, JOINT].concat(CATS);
   all.forEach(c => {
-    const n = ITEMS.filter(i => (c.id==="all"||i.cat===c.id) && !isTaken(i)).length;
-    const b = el("button","chip"); b.type="button";
+    const n = ITEMS.filter(i => inGroup(i, c.id) && !isTaken(i)).length;
+    const b = el("button","chip"+(c.id==="joint"?" joint":"")); b.type="button";
     b.setAttribute("aria-pressed", String(activeCat===c.id));
     b.append(c.name); const s=el("span","n",String(n)); b.append(s);
     b.onclick = () => { activeCat=c.id; try{localStorage.setItem("wl-cat",c.id)}catch(e){}; renderChips(); renderList(); };
@@ -448,8 +454,9 @@ function renderChips(){
 
 function renderList(){
   const main = $("#list"); main.textContent = "";
-  CATS.filter(c => activeCat==="all" || c.id===activeCat).forEach(c => {
-    let items = ITEMS.filter(i => i.cat===c.id);
+  const groups = activeCat==="joint" ? [JOINT] : CATS.filter(c => activeCat==="all" || c.id===activeCat);
+  groups.forEach(c => {
+    let items = ITEMS.filter(i => inGroup(i, c.id));
     if (onlyFree) items = items.filter(i => !isTaken(i));
     items.sort((a,b) => isTaken(a) - isTaken(b));
     if (!items.length) return;
@@ -464,9 +471,9 @@ function renderList(){
 }
 
 function card(i){
-  const a = el("article","item"+(isTaken(i)?" taken":""));
+  const a = el("article","item cat-"+i.cat+(isTaken(i)?" taken":""));
   if (i.img){ const ph = el("img","ph"); ph.src=i.img; ph.alt=""; ph.loading="lazy"; ph.decoding="async"; ph.width=480; ph.height=480; a.append(ph); }
-  if (i.big && !isTaken(i)) a.append(el("span","big","Можно скинуться"));
+  if (i.big && !isTaken(i)) a.append(el("span","big","Можно совместно"));
   const top = el("div","top"); top.append(el("h4",null,i.t), el("span","price",i.p+(i.p==="любая"?"":" с")));
   a.append(top, el("p",null,i.d));
   if (i.note && !isTaken(i)) a.append(el("div","note",i.note));
