@@ -94,6 +94,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .cat-mom{--c:var(--pink);--c-soft:#FFE6EF}
 .cat-joint{--c:#F29A1E;--c-soft:#FFF2CC}
 .chip.joint{border-color:var(--sun)}
+.chip.joint::before{content:"🎈 "}
 .chip.joint[aria-pressed="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun)}
 .cat-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap}
 .ribbon{position:relative;display:inline-block;font-family:var(--display);font-weight:700;font-size:20px;color:#fff;background:var(--c);
@@ -449,7 +450,7 @@ try { onlyFree = localStorage.getItem("wl-free") === "1"; } catch(e){}
 const $ = s => document.querySelector(s);
 function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
 
-const JOINT = {id:"joint", name:"🎈 Можно совместно", hint:"крупные подарки, на которые удобно скинуться вместе"};
+const JOINT = {id:"joint", name:"Можно совместно", hint:"крупные подарки, на которые удобно скинуться вместе"};
 const inGroup = (i, id) => id==="all" || (id==="joint" ? !!i.big : i.cat===id);
 
 function renderChips(){
