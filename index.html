@@ -115,6 +115,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .item h4{margin:0;font-size:16px;font-weight:600;line-height:1.3;text-wrap:balance}
 .price{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;white-space:nowrap;padding:3px 9px;border-radius:999px;background:var(--c-soft);color:var(--ink)}
 .item p{margin:0;font-size:14px;color:var(--muted)}
+.loading{text-align:center;color:var(--muted);padding:48px 16px;margin:0}
 .note{font-size:13px;padding:6px 10px;border-radius:10px;background:var(--sky);color:var(--ink)}
 .note::before{content:"☝ "}
 .foot{margin-top:auto;padding-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -341,8 +342,11 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 
 <script>
 /* ===== ДАННЫЕ ВИШЛИСТА =====
-   taken: "" = свободно; иначе строка, кто дарит (на странице — «Забронировано»). Брони гостей приходят из Google Таблицы через API..
-   q: поисковый запрос для Wildberries / Ozon. big: крупный подарок (можно скинуться). */
+   Источник — Google Таблица «Вишлист Мирана — 1 год» (лист 1). Колонки ищутся по заголовкам:
+   Название, Цена, Ссылка, Вариант (Точно такое / Можно похожее), Категория, Описание, Примечание,
+   Совместно (да), Скрыть (да), Поиск (запрос для WB/Ozon/Temu), Фото URL, Магазин, ID.
+   ID связывает карточку с бронями в листе «Брони» — не менять у существующих строк.
+   Если таблица недоступна, берётся снимок items.csv, сохранённый при последнем деплое. */
 const CATS = [
   {id:"dev",  name:"Развивающие", hint:"руки, логика, звук"},
   {id:"move", name:"Для движения", hint:"ползать, лазать, вставать"},
@@ -350,78 +354,60 @@ const CATS = [
   {id:"prac", name:"Практичное", hint:"то, что точно пойдёт в дело"},
   {id:"mom",  name:"Для мамы", hint:"год Катерины тоже был непростым"},
 ];
-const ITEMS = [
-  // Развивающие
-  {cat:"dev", img:"img/00.jpg", t:"Сортер", d:"Деревянный куб, «почтовый ящик» или сортер-овощи с прорезями.", p:"500–2 500", q:"сортер деревянный для малышей"},
-  {cat:"dev", img:"img/01.jpg", hide:true, t:"Пирамидка", d:"Классическая с кольцами или радуга-арка из дерева.", p:"500–4 000", q:"пирамидка деревянная для малышей"},
-  {cat:"dev", img:"img/02.jpg", t:"Бизиборд", d:"Замочки, выключатели, колёсики. Настенный или кубом.", p:"2 000–6 000", q:"бизиборд для малышей 1 год", big:true},
-  {cat:"dev", img:"img/03.jpg", t:"Стучалка с молоточком и шариками", d:"Забить шарик, чтобы он скатился вниз. Причина и следствие.", p:"800–2 000", q:"стучалка с молоточком и шариками"},
-  {cat:"dev", img:"img/55.jpg", t:"Граммофон со сказками", d:"Abumba: крутишь пластинку, звучат сказки и песенки на русском.", p:"4 394", q:"", u:"https://www.wildberries.kg/catalog/11376085/detail.aspx?size=36107256", uName:"Wildberries"},
-  {cat:"dev", img:"img/60.jpg", t:"Говорящий планшет с карточками", d:"ИнтеллектУм: вставляешь карточку, планшет называет слово. Помогает запустить речь.", p:"875", q:"", u:"https://www.wildberries.kg/catalog/498715547/detail.aspx?size=693236254", uName:"Wildberries"},
-  {cat:"dev", img:"img/05.jpg", hide:true, t:"Ксилофон или детский синтезатор", d:"Можно набор: ксилофон, маракасы, бубен.", p:"1 000–3 000", q:"ксилофон детский деревянный"},
-  {cat:"dev", img:"img/06.jpg", t:"Детская барабанная установка", d:"Громко, зато как счастлив будет 🙂", p:"~2 700", q:"детская барабанная установка"},
-  {cat:"dev", img:"img/07.jpg", t:"Крупные фигурки животных", d:"Ферма, Африка, Арктика, динозавры. Фигурки крупные, чтобы нельзя было проглотить.", p:"500–1 000", q:"фигурки животных для малышей крупные набор"},
-  {cat:"dev", img:"img/08.jpg", t:"Карточки «Звукоподражание»", d:"«Кто как говорит»: первые слова и звуки.", p:"~560", q:"карточки звукоподражание для малышей", u:"https://www.wildberries.kg/catalog/774807341/detail.aspx?size=1137202347", uName:"Вот эти"},
-  {cat:"dev", img:"img/09.jpg", t:"Карточки Домана", d:"Крупные картинки для первых слов.", p:"~550", q:"карточки домана", u:"https://www.wildberries.kg/catalog/97265945/detail.aspx?size=154243211", uName:"Вот эти"},
-  {cat:"dev", img:"img/10.jpg", t:"Крупный конструктор для малышей", d:"Mega Bloks First Builders или аналог, от 1 года.", p:"2 000–5 000", q:"mega bloks first builders"},
-  {cat:"dev", img:"img/11.jpg", t:"Игрушки для ванной", d:"Стаканчики-пересыпалки, мельница, водопад на присосках.", p:"500–2 000", q:"игрушки для ванной малыш пересыпалки"},
-  {cat:"dev", img:"img/12.jpg", hide:true, t:"Сенсорные мячики", d:"Набор разной фактуры и размера.", p:"500–1 500", q:"сенсорные мячики для малышей набор"},
-  {cat:"dev", img:"img/13.jpg", t:"Машинка-каталка на верёвочке", d:"Катать за собой, не ездить на ней.", p:"800–2 500", q:"каталка на веревочке деревянная"},
+let ITEMS = [];
 
-  // Движение
-  {cat:"move", img:"img/14.jpg", t:"Мягкие модули (горка + ступеньки)", d:"Лазать и сползать дома, безопасно для первых падений.", p:"10 000–30 000", q:"мягкие модули горка для малышей", big:true},
-  {cat:"move", img:"img/59.jpg", t:"Комплекс Пиклер 3 в 1 с горкой и аркой", d:"Трёхсторонний треугольник, горка-скалодром и арка, CuteFurniture. Хватит до трёх–четырёх лет.", p:"14 726", q:"", u:"https://www.wildberries.kg/catalog/224596683/detail.aspx?size=356035979", uName:"Wildberries", big:true, note:"Перед покупкой спросим ортопеда"},
-  {cat:"move", img:"img/16.jpg", t:"Складной туннель", d:"Ползать насквозь. Ортопед советовал побольше двигаться в разных положениях, это как раз оно.", p:"1 500–4 000", q:"туннель детский складной"},
-  {cat:"move", img:"img/17.jpg", t:"Вигвам или палатка-домик", d:"Своё укрытие для игр.", p:"1 000–1 500", q:"вигвам детский палатка домик"},
-  {cat:"move", img:"img/18.jpg", hide:true, t:"Сухой бассейн с шариками", d:"Бассейн с мягкими бортиками. Шарики отдельно, 100–200 штук, стоят 200–500 сом.", p:"3 000–10 000", q:"сухой бассейн с шариками детский"},
-  {cat:"move", img:"img/19.jpg", t:"Детская качеля", d:"Подвесная для дома, в дверной проём, или для улицы.", p:"1 000–1 500", q:"качели детские подвесные для малышей"},
-  {cat:"move", img:"img/20.jpg", t:"Массажные полусферы для ног", d:"Пупырчатые «кочки»: наступать и ходить по ним, стопам полезно.", p:"800–1 600", q:"массажные полусферы для ног детские"},
-  {cat:"move", img:"img/21.jpg", t:"Балансировочная дорожка", d:"Модульная тропа из камней и кочек.", p:"1 800–2 200", q:"балансировочная дорожка для детей", note:"Когда начнёт ходить сам"},
-  {cat:"move", img:"img/22.jpg", t:"Толстый коврик-пазл", d:"От 2 см толщиной, на весь игровой угол.", p:"2 000–6 000", q:"коврик пазл детский толстый 2 см"},
-  {cat:"move", img:"img/23.jpg", t:"Толокар, на вырост", d:"Модель, где Миран стоит ногами на полу. Пригодится, когда он пойдёт сам.", p:"2 000–4 000", q:"толокар для малышей от 1 года", note:"Только после первых самостоятельных шагов"},
-  {cat:"move", img:"img/24.jpg", t:"Трёхколёсный велосипед с ручкой и козырьком", d:"Родитель везёт его за ручку, потом Миран будет крутить педали сам.", p:"~7 500", q:"детский велосипед трехколесный с ручкой и козырьком", big:true},
-  {cat:"move", img:"img/25.jpg", t:"Санки", d:"Простые или санки-коляска со спинкой и ремнями. Зима в Бишкеке скоро.", p:"1 000–6 000", q:"санки детские со спинкой"},
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/1Pc-4Mo5-Nu3p2kbCPhEkWIU6OUbJHdQ35B_HaZOQmaY/gviz/tq?tqx=out:csv&headers=1&gid=0";
 
-  // Книжки
-  {cat:"book", img:"img/26.jpg", t:"Книжки с окошками", d:"«Кто спрятался?», анатомия с окошками, поднимающиеся створки.", p:"300–900", q:"книжка с окошками для малышей"},
-  {cat:"book", img:"img/27.jpg", t:"«Кто наделал на голову кроту?»", d:"Классика, которую малыши просят читать по сто раз.", p:"500–900", q:"кто наделал на голову кроту книга"},
-  {cat:"book", img:"img/28.jpg", t:"Тактильные и фетровые книжки", d:"Шершавое, мягкое, блестящее. Например, фетровая книжка «Дом».", p:"500–1 000", q:"тактильная книжка из фетра для малышей"},
-  {cat:"book", img:"img/57.jpg", t:"Тактильная книга «Ферма»", d:"«Счастье внутри»: стихи-болтушки про жителей фермы и тактильные вставки, которые можно трогать.", p:"802", q:"", u:"https://www.wildberries.kg/catalog/283430941/detail.aspx?size=434501969", uName:"Wildberries"},
-  {cat:"book", img:"img/29.jpg", t:"Виммельбухи", d:"«Год в лесу», «Транспорт». Большие картинки, которые можно рассматривать бесконечно.", p:"300–350", q:"виммельбух год в лесу"},
-  {cat:"book", img:"img/30.jpg", t:"Книга-пианино", d:"Клавиши и мелодии. Цвет любой.", p:"2 000–3 500", q:"книга пианино для малышей"},
-  {cat:"book", img:"img/31.jpg", t:"Книжки со звуками", d:"Животные, транспорт, песенки.", p:"800–2 000", q:"книжка со звуками для малышей"},
-  {cat:"book", img:"img/32.jpg", t:"Непромокаемые книжки для ванной", d:"Мягкие, можно мочить и жевать.", p:"300–800", q:"книжка для ванной малыш"},
-  {cat:"book", img:"img/33.jpg", t:"Фронтальный книжный стеллаж", d:"Монтессори-полка обложками вперёд, чтобы Миран сам выбирал книжку.", p:"3 000–8 000", q:"стеллаж для книг монтессори фронтальный"},
+function parseCSV(text){
+  const rows = []; let row = [], f = "", q = false;
+  for (let k = 0; k < text.length; k++){
+    const c = text[k];
+    if (q){
+      if (c === '"'){ if (text[k+1] === '"'){ f += '"'; k++; } else q = false; }
+      else f += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { row.push(f); f = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[k+1] === "\n") k++; row.push(f); rows.push(row); row = []; f = ""; }
+    else f += c;
+  }
+  if (f !== "" || row.length) { row.push(f); rows.push(row); }
+  return rows;
+}
 
-  // Практичное
-  {cat:"prac", img:"img/34.jpg", t:"Детский столик со стульчиком", d:"Для рисования, игр и еды «как взрослый». Можно только стол.", p:"~3 800", q:"детский столик и стульчик монтессори", u:"https://mobile.yangkeduo.com/goods.html?ps=WyV42TcXiR", uName:"Pinduoduo"},
-  {cat:"prac", img:"img/35.jpg", t:"Башня помощника", d:"Ступеньки-башня, чтобы стоять рядом со взрослыми у кухонного стола. На вырост.", p:"4 000–10 000", q:"башня помощника детская ступеньки", big:true},
-  {cat:"prac", img:"img/36.jpg", t:"Первая обувь для ходьбы", d:"С жёстким задником и гибкой подошвой. Размер спросите у нас.", p:"2 000–5 000", q:"первая обувь для малышей жесткий задник", note:"Размер уточните у Катерины"},
-  {cat:"prac", img:"img/37.jpg", t:"Зимний комбинезон на рост 86–92", d:"Плотный, со съёмной подстёжкой.", p:"5 000–15 000", q:"зимний комбинезон детский 86", big:true},
-  {cat:"prac", img:"img/56.jpg", t:"Термобельё с начёсом", d:"Lynxy Soft: тёплый хлопковый комплект под зимний комбинезон, до −30°.", p:"989", q:"", u:"https://www.wildberries.kg/catalog/289167311/detail.aspx?size=441464550", uName:"Wildberries", note:"Размер уже выбран по ссылке"},
-  {cat:"prac", img:"img/38.jpg", t:"Одежда на рост 86–92", d:"Боди, штанишки, свитшоты. Любые хорошие базовые вещи.", p:"500–3 000", q:"одежда для малыша 86"},
-  {cat:"prac", img:"img/39.jpg", t:"Набор силиконовой посуды", d:"Тарелка на присоске, ложки, поильник-непроливайка.", p:"1 000–3 000", q:"силиконовая посуда для малышей набор присоска"},
-  {cat:"prac", img:"img/41.jpg", t:"Увлажнитель воздуха", d:"Главное, чтобы воду можно было доливать сверху.", p:"~4 500", q:"увлажнитель воздуха верхний залив"},
-  {cat:"prac", img:"img/42.jpg", t:"Складной горшок", d:"Дорожный, пригодится в поездках.", p:"1 200–1 500", q:"складной дорожный горшок детский"},
-  {cat:"prac", img:"img/43.jpg", t:"Зубная паста Elmex 0–2", d:"Детская, со фтором. Расходник, лишней не будет.", p:"~600", q:"elmex детская паста 0-2"},
-  {cat:"prac", img:"img/44.jpg", t:"Набор для игр в песке", d:"Ведёрко, совок, формочки. На весну.", p:"200–500", q:"набор для песочницы детский"},
-  {cat:"prac", img:"img/45.jpg", t:"Сертификат в детский магазин", d:"Если не хочется гадать. Любой номинал нас очень выручит.", p:"любая", q:""},
+function rowsToItems(rows){
+  const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
+  const col = name => head.findIndex(h => h.startsWith(name));
+  const C = {t:col("название"), p:col("цена"), u:col("ссылка"), pick:col("вариант"), cat:col("категория"), d:col("описание"),
+             note:col("примечание"), big:col("совместно"), hide:col("скрыть"), q:col("поиск"), img:col("фото url"), shop:col("магазин"), id:col("id")};
+  const get = (r, k) => C[k] >= 0 ? String(r[C[k]] || "").trim() : "";
+  const yes = v => /^(да|yes|true|истина|1|\+)$/i.test(v);
+  const catId = name => (CATS.find(c => c.name.toLowerCase() === name.toLowerCase()) || CATS[0]).id;
+  const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
+  const out = [];
+  rows.forEach(r => {
+    const t = get(r,"t"); if (!t || yes(get(r,"hide"))) return;
+    const u = get(r,"u"), pk = get(r,"pick").toLowerCase();
+    let p = get(r,"p"); if (/^\d+$/.test(p.replace(/\s/g,""))) p = Number(p.replace(/\s/g,"")).toLocaleString("ru-RU");
+    let id = get(r,"id");
+    if (!id){ const m = u.match(/catalog\/(\d+)/); id = m ? "w"+m[1] : "h"+[...t].reduce((h,ch)=>(h*31+ch.charCodeAt(0))>>>0,7).toString(36); }
+    out.push({ id, t, p, u, uName: get(r,"shop") || (u ? shopName(u) : ""), d: get(r,"d"), note: get(r,"note"),
+      cat: catId(get(r,"cat")), big: yes(get(r,"big")), q: get(r,"q"), img: get(r,"img"),
+      pick: pk.startsWith("точно") ? "exact" : pk.startsWith("можно") ? "similar" : "" });
+  });
+  return out;
+}
 
-  // Для мамы
-  {cat:"mom", img:"img/46.jpg", t:"Сертификат на массаж или в SPA", d:"Пара часов только для себя. Спина за этот год натаскалась.", p:"3 000–10 000", q:"", big:true},
-  {cat:"mom", img:"img/47.jpg", t:"Сертификат в салон красоты", d:"Маникюр, стрижка, брови, что захочется.", p:"2 000–6 000", q:""},
-  {cat:"mom", img:"img/48.jpg", t:"Семейная фотосессия", d:"Чтобы у нас были красивые фото, где мама тоже в кадре, а не только за камерой.", p:"5 000–15 000", q:"", big:true},
-  {cat:"mom", img:"img/49.jpg", t:"Украшение с именем или датой", d:"Кулон или браслет с гравировкой «Миран» или «01.11.2025».", p:"2 000–8 000", q:"кулон с гравировкой имени серебро"},
-  {cat:"mom", img:"img/50.jpg", t:"Шёлковая наволочка и маска для сна", d:"Раз сна мало, пусть он будет хотя бы приятным.", p:"1 500–4 000", q:"шелковая наволочка натуральный шелк"},
-  {cat:"mom", img:"img/54.jpg", t:"Книга «Хорошие родители дают детям корни и крылья»", d:"Сигел и Брайсон о том, как растить спокойного и самостоятельного ребёнка. Для мамы и папы.", p:"476", q:"", u:"https://www.wildberries.kg/catalog/196481124/detail.aspx?size=318890210", uName:"Wildberries"},
-  {cat:"mom", img:"img/51.jpg", t:"Уборка квартиры клининговой службой", d:"Один свободный день без швабры. Лучший подарок маме малыша.", p:"3 000–6 000", q:""},
-  {cat:"mom", img:"img/52.jpg", t:"Вечер без ребёнка", d:"Посидим с Мираном, пока родители сходят в кино или ресторан. Можно вместе с сертификатом в ресторан.", p:"бесценно", q:""},
-  {cat:"mom", img:"img/53.jpg", t:"Уходовая косметика", d:"Любимые марки лучше уточнить у Бориса.", p:"2 000–6 000", q:"", note:"Марку спросите у Бориса"},
-];
-
-// hide:true — временно скрыто (уже есть дома); удалить флаг, чтобы вернуть
-ITEMS.splice(0, ITEMS.length, ...ITEMS.filter(i => !i.hide));
-ITEMS.forEach(i => { i.id = i.id || "i" + i.img.replace(/\D/g,""); });  // буква в начале, чтобы Google Таблица не превратила "00" в число 0
+async function loadItems(){
+  for (const url of [SHEET_CSV + "&t=" + Date.now(), "items.csv"]){
+    try {
+      const r = await fetch(url, {cache:"no-store"});
+      if (!r.ok) continue;
+      const items = rowsToItems(parseCSV(await r.text()));
+      if (items.length) return items;
+    } catch(e){}
+  }
+  return [];
+}
 
 /* ===== БРОНЬ (Google Таблица через Apps Script) ===== */
 const API = "https://script.google.com/macros/s/AKfycbyKPOH8HeaRpCUUGjMcXuYsOmcSlJpW_ujOccxZT2Wxy1VFxFRvv_rIhVHO8lSn5XPa/exec";  // URL веб-приложения Apps Script (…/exec)
@@ -434,7 +420,7 @@ async function loadReserved(){
   if (!API) return;
   try {
     const j = await (await fetch(API, {cache:"no-store"})).json();
-    if (j && j.reserved){ reserved = new Set(j.reserved.map(String)); renderChips(); renderList(); }
+    if (j && j.reserved){ reserved = new Set(j.reserved.map(String)); if (ITEMS.length){ renderChips(); renderList(); } }
   } catch(e){}
 }
 
@@ -484,6 +470,8 @@ function renderList(){
   $("#freeCount").innerHTML = "свободно <strong>"+free+"</strong> из "+ITEMS.length;
 }
 
+const priceText = p => /\d/.test(p) ? p + " с" : p;  // «любая», «нет в наличии» — без валюты
+
 function card(i){
   const a = el("article","item cat-"+i.cat+(isTaken(i)?" taken":""));
   if (i.img){ const ph = el("img","ph"); ph.src=i.img; ph.alt=""; ph.loading="lazy"; ph.decoding="async"; ph.width=480; ph.height=480; a.append(ph); }
@@ -493,8 +481,8 @@ function card(i){
   if (i.pick === "exact") tags.append(el("span","pick-tag exact","Хотим именно эту"));
   if (i.pick === "similar") tags.append(el("span","pick-tag similar","Можно похожую"));
   if (tags.childNodes.length) a.append(tags);
-  const top = el("div","top"); top.append(el("h4",null,i.t), el("span","price",i.p+(i.p==="любая"?"":" с")));
-  a.append(top, el("p",null,i.d));
+  const top = el("div","top"); top.append(el("h4",null,i.t)); if (i.p) top.append(el("span","price",priceText(i.p)));
+  a.append(top); if (i.d) a.append(el("p",null,i.d));
   if (i.note && !isTaken(i)) a.append(el("div","note",i.note));
   const f = el("div","foot");
   if (i.u && !isTaken(i)){
@@ -516,7 +504,7 @@ let current = null;
 function setStatus(msg, err){ const s=$("#status"); s.textContent=msg||""; s.classList.toggle("err", !!err); }
 function openSheet(i){
   current = i; setStatus("");
-  $("#miniImg").src = i.img; $("#miniT").textContent = i.t; $("#miniP").textContent = i.p + (i.p==="любая" ? "" : " сом");
+  $("#miniImg").src = i.img; $("#miniT").textContent = i.t; $("#miniP").textContent = /\d/.test(i.p) ? i.p + " сом" : i.p;
   try { $("#fromName").value = localStorage.getItem("wl-name") || ""; } catch(e){}
   $("#bookBtn").disabled = false; $("#sheet").hidden = false; $("#fromName").focus();
 }
@@ -589,8 +577,13 @@ $("#onlyFree").onchange = e => { onlyFree = e.target.checked; try{localStorage.s
   }
 })();
 
-renderChips(); renderList();
-loadReserved();
+$("#list").innerHTML = '<p class="loading">Загружаем список подарков…</p>';
+loadItems().then(items => {
+  ITEMS = items;
+  if (!ITEMS.length){ $("#list").innerHTML = '<p class="loading">Не получилось загрузить список. Обновите страницу или напишите Борису.</p>'; return; }
+  renderChips(); renderList();
+  loadReserved();
+});
 setInterval(loadReserved, 60000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) loadReserved(); });
 </script>
