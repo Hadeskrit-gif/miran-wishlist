@@ -574,7 +574,8 @@ function card(i){
       const d = el("a","shop", urls.length === 1 ? (i.uName||"Ссылка") : shopName(u)); d.href=u; d.target="_blank"; d.rel="noopener"; f.append(d);
     });
   }
-  if (i.q && !isTaken(i)){
+  // «Хотим именно эту»: только ссылка на конкретный товар, без общих поисковых кнопок
+  if (i.q && !isTaken(i) && !(i.pick === "exact" && i.u)){
     const w = el("a","shop","Wildberries"); w.href=WB(i.q); w.target="_blank"; w.rel="noopener";
     const o = el("a","shop","Ozon"); o.href=OZ(i.q); o.target="_blank"; o.rel="noopener";
     const m = el("a","shop","Temu"); m.href=TM(i.q); m.target="_blank"; m.rel="noopener";
