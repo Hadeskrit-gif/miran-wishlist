@@ -599,6 +599,8 @@ function parseCSV(text){
   return rows;
 }
 
+const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
+
 function rowsToItems(rows){
   const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
   const col = name => head.findIndex(h => h.startsWith(name));
@@ -607,7 +609,6 @@ function rowsToItems(rows){
   const get = (r, k) => C[k] >= 0 ? String(r[C[k]] || "").trim() : "";
   const yes = v => /^(да|yes|true|истина|1|\+)$/i.test(v);
   const catId = name => (CATS.find(c => c.name.toLowerCase() === name.toLowerCase()) || CATS[0]).id;
-  const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
   const out = [];
   rows.forEach(r => {
     const t = get(r,"t"); if (!t || yes(get(r,"hide"))) return;
@@ -712,7 +713,11 @@ function card(i){
   if (i.note && !isTaken(i)) a.append(el("div","note",i.note));
   const f = el("div","foot");
   if (i.u && !isTaken(i)){
-    const d = el("a","shop",i.uName||"Ссылка"); d.href=i.u; d.target="_blank"; d.rel="noopener"; f.append(d);
+    // в колонке «Ссылка» можно несколько адресов через пробел: у каждого своя подпись по магазину
+    const urls = i.u.split(/\s+/).filter(Boolean);
+    urls.forEach(u => {
+      const d = el("a","shop", urls.length === 1 ? (i.uName||"Ссылка") : shopName(u)); d.href=u; d.target="_blank"; d.rel="noopener"; f.append(d);
+    });
   }
   if (i.q && !isTaken(i)){
     const w = el("a","shop","Wildberries"); w.href=WB(i.q); w.target="_blank"; w.rel="noopener";
