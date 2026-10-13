@@ -243,6 +243,9 @@ section.cat{margin-bottom:60px}
 .book-note .bn-ico{font-size:28px}
 .book-note b{display:block;font-size:19px;color:var(--ivory)}
 .book-note p{margin:6px 0 0;font-size:16px;color:var(--muted)}
+.sizes{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:2px 0 0}
+.sz-lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sz{font-weight:700;font-size:15px;padding:5px 12px;border:1px solid var(--holo);color:var(--holo)}
 </style>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
@@ -716,7 +719,7 @@ function rowsToItems(rows){
   const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
   const col = name => head.findIndex(h => h.startsWith(name));
   const C = {t:col("название"), p:col("цена"), u:col("ссылка"), pick:col("вариант"), cat:col("категория"), d:col("описание"),
-             note:col("примечание"), big:col("совместно"), hide:col("скрыть"), q:col("поиск"), img:col("фото url"), shop:col("магазин"), id:col("id"), ord:col("порядок")};
+             note:col("примечание"), big:col("совместно"), hide:col("скрыть"), q:col("поиск"), img:col("фото url"), shop:col("магазин"), id:col("id"), ord:col("порядок"), size:col("размер")};
   const get = (r, k) => C[k] >= 0 ? String(r[C[k]] || "").trim() : "";
   const yes = v => /^(да|yes|true|истина|1|\+)$/i.test(v);
   const catId = name => (CATS.find(c => c.name.toLowerCase() === name.toLowerCase()) || CATS[0]).id;
@@ -728,7 +731,7 @@ function rowsToItems(rows){
     let id = get(r,"id");
     if (!id){ const m = u.match(/catalog\/(\d+)/); id = m ? "w"+m[1] : "h"+[...t].reduce((h,ch)=>(h*31+ch.charCodeAt(0))>>>0,7).toString(36); }
     out.push({ id, t, p, u, uName: get(r,"shop") || (u ? shopName(u) : ""), d: get(r,"d"), note: get(r,"note"),
-      ord: Number(get(r,"ord")) || 9999,
+      ord: Number(get(r,"ord")) || 9999, size: get(r,"size"),
       cat: catId(get(r,"cat")), big: yes(get(r,"big")), q: get(r,"q"), img: get(r,"img"),
       pick: pk.startsWith("точно") ? "exact" : pk.startsWith("можно") ? "similar" : "" });
   });
@@ -830,7 +833,14 @@ function card(i){
   if (i.pick === "similar") tags.append(el("span","pick-tag similar","Можно похожую"));
   if (tags.childNodes.length) a.append(tags);
   const top = el("div","top"); top.append(el("h4",null,i.t)); if (i.p) top.append(el("span","price",priceText(i.p)));
-  a.append(top); if (i.d) a.append(el("p",null,i.d));
+  a.append(top);
+  // размер одежды: одинаковая заметная плашка у всех карточек с одеждой (колонка «Размер», варианты через |)
+  if (i.size){
+    const sz = el("div","sizes"); sz.append(el("span","sz-lab","Размер"));
+    i.size.split("|").map(x => x.trim()).filter(Boolean).forEach(x => sz.append(el("span","sz",x)));
+    a.append(sz);
+  }
+  if (i.d) a.append(el("p",null,i.d));
   if (i.note && !isTaken(i)) a.append(el("div","note",i.note));
   const f = el("div","foot");
   if (i.u && !isTaken(i)){
