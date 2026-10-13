@@ -321,7 +321,7 @@ section.cat{margin-bottom:56px;--c:var(--gold)}
       <rect width="1000" height="520" fill="url(#fade)"/>
     </svg>
     <div>
-      <div class="eyebrow">Год первый · 1 ноября</div>
+      <div class="eyebrow">Год первый · празднуем 7 ноября</div>
       <p class="invite">Внемлите, друзья и родичи!</p>
       <h1>Пир в честь Мирана, сына Екатерины и Бориса</h1>
       <p class="lead">Минул год с того дня, как юный Миран явился в мир. Мы собрали дары, что <b>воистину сослужат ему службу</b>: игрушки по летам, снаряжение для странствий по дому, книги, нужные в хозяйстве вещи и кое-что для его матери, Катерины. Цены указаны примерно, в сомах. Лавку и мастера выбирайте сами.</p>
@@ -632,10 +632,20 @@ $("#onlyFree").checked = onlyFree;
 $("#onlyFree").onchange = e => { onlyFree = e.target.checked; try{localStorage.setItem("wl-free", onlyFree?"1":"0")}catch(err){}; renderList(); };
 
 (function countdown(){
-  const bd = new Date(2026,10,1); const now = new Date(); now.setHours(0,0,0,0);
-  const d = Math.round((bd - now)/86400000);
+  // День рождения 1 ноября, праздник 7 ноября: таймер идёт до праздника
+  const start = new Date(2026,9,12), bday = new Date(2026,10,1), feast = new Date(2026,10,7);
+  const now = new Date(); now.setHours(0,0,0,0);
+  const day = 86400000, d = Math.round((feast - now)/day);
   const words = n => { const m10=n%10, m100=n%100; if(m10===1&&m100!==11) return "день"; if(m10>=2&&m10<=4&&(m100<12||m100>14)) return "дня"; return "дней"; };
-  $("#countdown").innerHTML = d>0 ? "до праздника <strong>"+d+"</strong> "+words(d) : d===0 ? "<strong>сегодня праздник!</strong>" : "праздник прошёл 🎉";
+  const old = $("#countdown");   // тематические копии
+  if (old) old.innerHTML = d>0 ? "до праздника 7 ноября <strong>"+d+"</strong> "+words(d) : d===0 ? "<strong>сегодня праздник!</strong>" : "праздник прошёл 🎉";
+  const n = $("#cdDays"); if (!n) return;
+  if (d>0){ n.textContent = d; $("#cdUnit").textContent = words(d); $("#cdLabel").textContent = "до праздника"; }
+  else if (d===0){ n.textContent = "Сегодня!"; $("#cdUnit").textContent = ""; $("#cdLabel").textContent = "наш праздник 🎉"; }
+  else { n.textContent = "🎉"; $("#cdUnit").textContent = ""; $("#cdLabel").textContent = "праздник прошёл"; }
+  const span = feast - start, pct = v => Math.max(0, Math.min(100, (v - start)/span*100));
+  $("#cdFill").style.width = pct(now) + "%";
+  $("#cdBd").style.left = pct(bday) + "%";
 })();
 
 (function decor(){
