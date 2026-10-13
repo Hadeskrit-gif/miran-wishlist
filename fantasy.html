@@ -134,7 +134,7 @@ section.cat{margin-bottom:56px;--c:var(--gold)}
 .item.taken .ph{filter:grayscale(1) sepia(.35);opacity:.6}
 .item .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:6px}
 .item h4{margin:0;font-family:var(--display);font-weight:700;font-size:20px;line-height:1.1;letter-spacing:.02em;text-wrap:balance;color:var(--ink)}
-.price{font-family:var(--body);font-weight:600;font-size:15px;white-space:nowrap;color:var(--seal);font-variant-numeric:lining-nums tabular-nums;background:none;padding:0}
+.price{font-family:var(--body);font-weight:600;font-size:15px;white-space:normal;text-align:right;color:var(--seal);font-variant-numeric:lining-nums tabular-nums;background:none;padding:0}
 .item p{margin:0;font-size:16px;line-height:1.4;color:var(--ink-soft)}
 .loading{text-align:center;color:var(--ink-soft);padding:48px 16px;margin:0}
 .note{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink);border-left:2px solid var(--seal);padding:2px 0 2px 10px;background:none}
@@ -461,6 +461,13 @@ function parseCSV(text){
 
 const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
 
+// цены: пробелы вокруг тире в диапазоне; разрыв строки возможен только после тире (второе значение уходит вниз)
+function fmtPrice(p){
+  const NB = "\u00A0";
+  return p.replace(/(\d)[ \u00A0](?=\d{3}(\D|$))/g, "$1" + NB)   // тысячи не разрываем
+          .replace(/\s*[–—-]\s*/g, NB + "– ");                   // «500 – 2 500»
+}
+
 function rowsToItems(rows){
   const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
   const col = name => head.findIndex(h => h.startsWith(name));
@@ -474,6 +481,7 @@ function rowsToItems(rows){
     const t = get(r,"t"); if (!t || yes(get(r,"hide"))) return;
     const u = get(r,"u"), pk = get(r,"pick").toLowerCase();
     let p = get(r,"p"); if (/^\d+$/.test(p.replace(/\s/g,""))) p = Number(p.replace(/\s/g,"")).toLocaleString("ru-RU");
+    p = fmtPrice(p);
     let id = get(r,"id");
     if (!id){ const m = u.match(/catalog\/(\d+)/); id = m ? "w"+m[1] : "h"+[...t].reduce((h,ch)=>(h*31+ch.charCodeAt(0))>>>0,7).toString(36); }
     out.push({ id, t, p, u, uName: get(r,"shop") || (u ? shopName(u) : ""), d: get(r,"d"), note: get(r,"note"),
@@ -567,7 +575,7 @@ function renderList(){
   $("#freeCount").innerHTML = "свободно <strong>"+free+"</strong> из "+ITEMS.length;
 }
 
-const priceText = p => /\d/.test(p) ? p + " с" : p;  // «любая», «нет в наличии» — без валюты
+const priceText = p => /\d/.test(p) ? p + "\u00A0с" : p;  // «любая», «нет в наличии» — без валюты
 
 function card(i){
   const a = el("article","item cat-"+i.cat+(isTaken(i)?" taken":""));

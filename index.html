@@ -114,7 +114,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .item.taken .ph{filter:grayscale(1);opacity:.55}
 .item .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-top:4px}
 .item h4{margin:0;font-size:16px;font-weight:600;line-height:1.3;text-wrap:balance}
-.price{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;white-space:nowrap;padding:3px 9px;border-radius:999px;background:var(--c-soft);color:var(--ink)}
+.price{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;white-space:normal;text-align:right;line-height:1.25;flex:0 1 auto;padding:3px 9px;border-radius:14px;background:var(--c-soft);color:var(--ink)}
 .item p{margin:0;font-size:14px;color:var(--muted)}
 .loading{text-align:center;color:var(--muted);padding:48px 16px;margin:0}
 .note{font-size:13px;padding:6px 10px;border-radius:10px;background:var(--sky);color:var(--ink)}
@@ -552,6 +552,13 @@ function parseCSV(text){
 
 const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
 
+// цены: пробелы вокруг тире в диапазоне; разрыв строки возможен только после тире (второе значение уходит вниз)
+function fmtPrice(p){
+  const NB = "\u00A0";
+  return p.replace(/(\d)[ \u00A0](?=\d{3}(\D|$))/g, "$1" + NB)   // тысячи не разрываем
+          .replace(/\s*[–—-]\s*/g, NB + "– ");                   // «500 – 2 500»
+}
+
 function rowsToItems(rows){
   const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
   const col = name => head.findIndex(h => h.startsWith(name));
@@ -565,6 +572,7 @@ function rowsToItems(rows){
     const t = get(r,"t"); if (!t || yes(get(r,"hide"))) return;
     const u = get(r,"u"), pk = get(r,"pick").toLowerCase();
     let p = get(r,"p"); if (/^\d+$/.test(p.replace(/\s/g,""))) p = Number(p.replace(/\s/g,"")).toLocaleString("ru-RU");
+    p = fmtPrice(p);
     let id = get(r,"id");
     if (!id){ const m = u.match(/catalog\/(\d+)/); id = m ? "w"+m[1] : "h"+[...t].reduce((h,ch)=>(h*31+ch.charCodeAt(0))>>>0,7).toString(36); }
     out.push({ id, t, p, u, uName: get(r,"shop") || (u ? shopName(u) : ""), d: get(r,"d"), note: get(r,"note"),
@@ -658,7 +666,7 @@ function renderList(){
   $("#freeCount").innerHTML = "свободно <strong>"+free+"</strong> из "+ITEMS.length;
 }
 
-const priceText = p => /\d/.test(p) ? p + " с" : p;  // «любая», «нет в наличии» — без валюты
+const priceText = p => /\d/.test(p) ? p + "\u00A0с" : p;  // «любая», «нет в наличии» — без валюты
 
 function card(i){
   const a = el("article","item cat-"+i.cat+(isTaken(i)?" taken":""));
