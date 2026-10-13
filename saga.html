@@ -668,6 +668,7 @@ section.cat{margin-bottom:60px}
     <label for="fromName">Как вас зовут
       <input id="fromName" name="fromName" placeholder="Например: тётя Ануш" autocomplete="name" maxlength="100" required>
     </label>
+    <div class="name-hint" id="nameHint">Сначала укажите имя. Без него кнопка «Забронировать» не работает.</div>
     <div class="status" id="status" aria-live="polite"></div>
     <div class="row">
       <button class="btn primary" id="bookBtn" type="submit">Забронировать</button>
@@ -870,12 +871,17 @@ function openSheet(i){
   current = i; setStatus("");
   $("#miniImg").src = i.img; $("#miniT").textContent = i.t; $("#miniP").textContent = /\d/.test(i.p) ? i.p + " сом" : i.p;
   try { $("#fromName").value = localStorage.getItem("wl-name") || ""; } catch(e){}
-  $("#bookBtn").disabled = false; $("#sheet").hidden = false; $("#fromName").focus();
+  syncBook(); $("#sheet").hidden = false; $("#fromName").focus();
 }
 function closeSheet(){ $("#sheet").hidden = true; }
+// бронь доступна только после ввода имени
+function syncBook(){
+  const ok = $("#fromName").value.trim().length > 0;
+  $("#bookBtn").disabled = !ok; $("#bookBtn").classList.toggle("need-name", !ok); $("#nameHint").hidden = ok;
+}
 let toastT;
 function toast(msg){ const el=$("#toast"); el.textContent=msg; el.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>el.hidden=true, 4000); }
-$("#fromName").addEventListener("input", () => { try{localStorage.setItem("wl-name",$("#fromName").value)}catch(e){} });
+$("#fromName").addEventListener("input", () => { try{localStorage.setItem("wl-name",$("#fromName").value)}catch(e){} syncBook(); });
 $("#closeBtn").onclick = closeSheet;
 $("#sheet").addEventListener("click", e => { if (e.target.id==="sheet") closeSheet(); });
 document.addEventListener("keydown", e => { if (e.key==="Escape") closeSheet(); });
@@ -898,10 +904,10 @@ $("#bookForm").addEventListener("submit", async e => {
       renderChips(); renderList();
       setStatus("Этот подарок только что забронировал кто-то другой. Выберите, пожалуйста, другой.", true);
     } else {
-      setStatus("Не получилось забронировать. Попробуйте ещё раз.", true); btn.disabled = false;
+      setStatus("Не получилось забронировать. Попробуйте ещё раз.", true); syncBook();
     }
   } catch(err){
-    setStatus("Нет связи с таблицей. Проверьте интернет и попробуйте ещё раз.", true); btn.disabled = false;
+    setStatus("Нет связи с таблицей. Проверьте интернет и попробуйте ещё раз.", true); syncBook();
   }
 });
 
