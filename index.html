@@ -228,6 +228,13 @@ section.cat{position:relative}
 .fete-bar .fin{right:0;bottom:-4px;align-items:flex-end}
 .fete-bar .fin i{order:-1;position:absolute;right:-2px;top:-24px}
 @media (max-width:760px){.fete-count{margin-left:auto}.fete-bar .bd em{font-size:11px}}
+
+/* плашка про книжки в ассортименте */
+.book-note{display:flex;gap:16px;align-items:flex-start;margin:0 0 18px;padding:16px 20px;border-radius:22px;background:var(--c-soft);border:2px dashed var(--c)}
+.book-note .bn-ico{flex:none;width:52px;height:52px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:30px;box-shadow:0 2px 0 var(--c)}
+.book-note b{display:block;font-family:var(--display);font-size:clamp(17px,2.4vw,21px);line-height:1.2;color:var(--ink)}
+.book-note p{margin:6px 0 0;color:var(--muted);font-size:15px;line-height:1.45}
+@media (max-width:560px){.book-note{padding:14px 14px;gap:12px}.book-note .bn-ico{width:42px;height:42px;font-size:24px;border-radius:12px}}
 </style>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
@@ -403,10 +410,6 @@ section.cat{position:relative}
           <ellipse cx="124" cy="124" rx="5" ry="6" fill="#D9822B" opacity=".85"/>
           <!-- мантия Слизерина -->
           <g class="cloak">
-            <!-- капюшон лежит на шее сзади -->
-            <path d="M122 154 C114 122 122 98 142 94 C160 92 170 110 164 130 C160 144 152 152 146 156 Z" fill="#1E6B45"/>
-            <path d="M126 150 C120 124 128 106 143 103 C156 102 160 116 156 128 C152 140 146 148 142 152 Z" fill="#14502F"/>
-            <path d="M122 154 C114 122 122 98 142 94 C160 92 170 110 164 130" fill="none" stroke="#C9D2DC" stroke-width="3.5" stroke-linecap="round"/>
             <!-- сама мантия -->
             <path d="M104 150 L136 150 C172 168 204 190 218 228 L216 268 Q200 278 184 268 Q168 278 152 268 Q136 278 120 268 Q108 262 104 246 C98 214 100 180 104 150 Z" fill="#1E6B45"/>
             <path d="M104 150 L136 150 C172 168 204 190 218 228 L216 238 C198 196 168 176 134 164 C118 160 108 160 102 166 Z" fill="#2E8B5C" opacity=".75"/>
@@ -414,7 +417,7 @@ section.cat{position:relative}
             <path d="M104 150 C98 180 98 214 104 246" fill="none" stroke="#C9D2DC" stroke-width="4" stroke-linecap="round"/>
             <path d="M104 150 L136 150" fill="none" stroke="#C9D2DC" stroke-width="5" stroke-linecap="round"/>
             <!-- эмблема Слизерина: щит со змеёй -->
-            <g class="crest">
+            <g class="crest" transform="translate(126 186) scale(.5) translate(-166 -223)">
               <path d="M146 194 L186 194 L186 224 Q186 242 166 252 Q146 242 146 224 Z" fill="#14502F" stroke="#C9D2DC" stroke-width="3.5" stroke-linejoin="round"/>
               <path d="M172 204 C158 204 156 216 166 220 C176 224 176 236 160 238" fill="none" stroke="#E6EBF0" stroke-width="5.5" stroke-linecap="round"/>
               <path d="M172 204 C158 204 156 216 166 220 C176 224 176 236 160 238" fill="none" stroke="#1E6B45" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="1 7"/>
@@ -631,6 +634,13 @@ function renderList(){
       const k = CATS.indexOf(c); ow.style[k % 2 ? "left" : "right"] = "8px";
       const u = document.createElementNS("http://www.w3.org/2000/svg","use"); u.setAttribute("href", k % 2 ? "#owl-plain" : "#owl-sit"); ow.append(u); sec.append(ow); }
     const h = el("div","cat-head"); const rw = el("div","ribbon-wrap"); rw.append(el("h2","ribbon",c.name)); h.append(rw, el("p",null,c.hint)); sec.append(h);
+    if (c.id === "book"){
+      const bn = el("aside","book-note"); bn.setAttribute("role","note");
+      bn.innerHTML = '<div class="bn-ico" aria-hidden="true">📚</div><div><b>Хотите подарить книжки в ассортименте, а их уже забронировали?</b>'
+        + '<p>Картонки, виммельбухи, книжки с окошками и так далее: каждую позицию мог взять только один человек. '
+        + 'Напишите нам, и мы дадим контакт того, кто забронировал. Договоритесь и подарите Мирану разные книжки.</p></div>';
+      sec.append(bn);
+    }
     const grid = el("div","grid");
     items.forEach(i => grid.append(card(i)));
     sec.append(grid); main.append(sec);

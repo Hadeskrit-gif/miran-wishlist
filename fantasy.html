@@ -207,6 +207,10 @@ section.cat{margin-bottom:56px;--c:var(--gold)}
   .spacer{display:none}
 }
 @media (prefers-reduced-motion:no-preference){.item{transition:transform .2s}.item:not(.taken):hover{transform:translateY(-3px)}}
+.book-note{display:flex;gap:16px;margin:0 0 18px;padding:16px 20px;border:1px solid var(--gold);background:rgba(0,0,0,.18)}
+.book-note .bn-ico{font-size:28px}
+.book-note b{display:block;font-size:19px}
+.book-note p{margin:6px 0 0;font-size:16px}
 </style>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
@@ -544,6 +548,13 @@ function renderList(){
       const k = CATS.indexOf(c); ow.style[k % 2 ? "left" : "right"] = "8px";
       const u = document.createElementNS("http://www.w3.org/2000/svg","use"); u.setAttribute("href", k % 2 ? "#owl-plain" : "#owl-sit"); ow.append(u); sec.append(ow); }
     const h = el("div","cat-head"); const rw = el("div","ribbon-wrap"); rw.append(el("h2","ribbon",c.name)); h.append(rw, el("p",null,c.hint)); sec.append(h);
+    if (c.id === "book"){
+      const bn = el("aside","book-note"); bn.setAttribute("role","note");
+      bn.innerHTML = '<div class="bn-ico" aria-hidden="true">📚</div><div><b>Хотите подарить книжки в ассортименте, а их уже забронировали?</b>'
+        + '<p>Картонки, виммельбухи, книжки с окошками и так далее: каждую позицию мог взять только один человек. '
+        + 'Напишите нам, и мы дадим контакт того, кто забронировал. Договоритесь и подарите Мирану разные книжки.</p></div>';
+      sec.append(bn);
+    }
     const grid = el("div","grid");
     items.forEach(i => grid.append(card(i)));
     sec.append(grid); main.append(sec);
