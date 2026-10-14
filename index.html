@@ -91,6 +91,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .cat-move{--c:var(--mint);--c-soft:#DDF5EC}
 .cat-book{--c:var(--lilac);--c-soft:#ECE8FD}
 .cat-prac{--c:#E9A800;--c-soft:#FFF2CC}
+.cat-care{--c:#3C9FD6;--c-soft:#DCEFFA}
 .cat-mom{--c:var(--pink);--c-soft:#FFE6EF}
 .cat-joint{--c:#F29A1E;--c-soft:#FFF2CC}
 .chip.joint{border-color:var(--sun)}
@@ -113,7 +114,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .item.taken .ph{filter:grayscale(1);opacity:.55}
 .item .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-top:4px}
 .item h4{margin:0;font-size:16px;font-weight:600;line-height:1.3;text-wrap:balance}
-.price{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;white-space:nowrap;padding:3px 9px;border-radius:999px;background:var(--c-soft);color:var(--ink)}
+.price{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;white-space:normal;text-align:right;line-height:1.25;flex:0 1 auto;padding:3px 9px;border-radius:14px;background:var(--c-soft);color:var(--ink)}
 .item p{margin:0;font-size:14px;color:var(--muted)}
 .loading{text-align:center;color:var(--muted);padding:48px 16px;margin:0}
 .note{font-size:13px;padding:6px 10px;border-radius:10px;background:var(--sky);color:var(--ink)}
@@ -174,6 +175,9 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 .mini-t{font-weight:600;line-height:1.3}
 .mini-p{font-size:13px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
 .btn[disabled]{opacity:.6;cursor:progress}
+.btn.need-name[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.name-hint{font-size:14px;color:var(--coral);font-weight:600;margin-top:-4px}
+.name-hint[hidden]{display:none}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:#fff;
   padding:12px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 10px 30px -10px rgba(38,50,92,.5);max-width:calc(100% - 32px);text-align:center}
 .taken-pill.mine{color:var(--mint)}
@@ -186,9 +190,150 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
   .flags span{width:24px;height:30px}
 }
 @media (prefers-reduced-motion:no-preference){.item{transition:transform .15s}.item:not(.taken):hover{transform:translateY(-2px)}}
+
+/* совы на фоне и на лентах разделов */
+.owls{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.owls .o{position:absolute;opacity:.8;transform:rotate(var(--r,0deg))}
+.owls .o:nth-child(3n){--r:-8deg}.owls .o:nth-child(3n+1){--r:7deg}
+.owl-deco{position:absolute;top:-44px;width:66px;height:74px;pointer-events:none;z-index:2}
+section.cat{position:relative}
+.owl-hero{position:absolute;bottom:20px;right:26px;width:70px;height:78px;pointer-events:none;z-index:2}
+@media (max-width:760px){.owl-hero{width:54px;height:60px;bottom:14px;right:16px}}
+@media (max-width:1180px){.owls .o{opacity:.4}}
+@media (max-width:760px){.owls{display:none}.owl-deco{width:50px;height:56px;top:-34px}}
+@media (prefers-reduced-motion:no-preference){
+  .owls .o{animation:owlbob 7s ease-in-out infinite}
+  .owls .o:nth-child(2n){animation-duration:9s;animation-delay:-3s}
+  .owls .o:nth-child(5n+2){animation-name:none}
+  @keyframes owlbob{0%,100%{translate:0 0}50%{translate:0 -14px}}
+}
+
+/* дата праздника и таймер */
+.fete{display:flex;align-items:center;flex-wrap:wrap;gap:14px 18px;background:var(--sky);border-radius:22px;padding:14px 16px 12px 14px;margin:0 0 4px}
+.cal{width:62px;flex:none;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 0 var(--sky-deep);text-align:center;font-family:var(--display)}
+.cal .m{display:block;background:var(--coral);color:#fff;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 0}
+.cal .d{display:block;font-size:36px;font-weight:700;line-height:1.12;color:var(--ink)}
+.fete-txt{flex:1 1 200px;min-width:0}
+.fete-txt b{display:block;font-family:var(--display);font-size:clamp(19px,2.8vw,26px);line-height:1.12;color:var(--ink)}
+.fete-txt small{display:block;color:var(--muted);font-size:14px;line-height:1.35;margin-top:3px}
+.fete-count{flex:none;text-align:center;background:var(--coral);color:#fff;border-radius:18px;padding:8px 16px 9px;min-width:112px;box-shadow:0 3px 0 #D9564A}
+.fete-count .n{font-family:var(--display);font-weight:700;font-size:42px;line-height:1;font-variant-numeric:tabular-nums}
+.fete-count .u{display:inline-block;font-weight:700;font-size:15px;margin-left:4px}
+.fete-count .l{display:block;font-size:12px;letter-spacing:.04em;margin-top:2px;opacity:.95}
+.fete-bar{flex-basis:100%;position:relative;padding:20px 0 22px}
+.fete-bar .trk{height:10px;border-radius:99px;background:#fff;overflow:hidden}
+.fete-bar .fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--sun),var(--coral))}
+.fete-bar .mk{position:absolute;display:flex;flex-direction:column;align-items:center;font-style:normal;line-height:1.1}
+.fete-bar .mk i{font-style:normal;font-size:18px}
+.fete-bar .mk em{font-style:normal;font-size:12px;color:var(--muted);white-space:nowrap;margin-top:2px}
+.fete-bar .bd{top:-2px;transform:translateX(-50%);flex-direction:column-reverse}
+.fete-bar .bd em{margin:0 0 2px}
+.fete-bar .fin{right:0;bottom:-4px;align-items:flex-end}
+.fete-bar .fin i{order:-1;position:absolute;right:-2px;top:-24px}
+@media (max-width:760px){.fete-count{margin-left:auto}.fete-bar .bd em{font-size:11px}}
+
+/* плашка про книжки в ассортименте */
+.book-note{display:flex;gap:16px;align-items:flex-start;margin:0 0 18px;padding:16px 20px;border-radius:22px;background:var(--c-soft);border:2px dashed var(--c)}
+.book-note .bn-ico{flex:none;width:52px;height:52px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:30px;box-shadow:0 2px 0 var(--c)}
+.book-note b{display:block;font-family:var(--display);font-size:clamp(17px,2.4vw,21px);line-height:1.2;color:var(--ink)}
+.book-note p{margin:6px 0 0;color:var(--muted);font-size:15px;line-height:1.45}
+@media (max-width:560px){.book-note{padding:14px 14px;gap:12px}.book-note .bn-ico{width:42px;height:42px;font-size:24px;border-radius:12px}}
+
+/* размер одежды */
+.sizes{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:2px 0 0}
+.sz-lab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sz{font-weight:700;font-size:14px;line-height:1;padding:7px 12px;border-radius:999px;background:var(--ink);color:#fff;font-variant-numeric:tabular-nums}
 </style>
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- сова с письмом (сидит) -->
+    <symbol id="owl-sit" viewBox="0 0 100 112">
+      <g stroke="#1D2140" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M18 56 C16 28 34 10 58 11 C82 12 94 32 91 60 C90 84 78 100 58 101 L40 101 C24 98 16 80 18 56 Z" fill="#fff"/>
+        <path d="M28 62 C16 78 17 96 30 105 C42 99 47 84 46 66 Z" fill="#fff"/>
+        <path d="M60 98 C70 90 78 78 80 66" fill="none" stroke-width="2.2" opacity=".55"/>
+        <path d="M66 100 C76 92 84 80 86 68" fill="none" stroke-width="2.2" opacity=".45"/>
+        <path d="M34 20 C38 14 44 12 50 13 M70 14 C78 16 84 22 86 30" fill="none" stroke-width="2.4"/>
+        <ellipse cx="38" cy="39" rx="9.5" ry="9" fill="#E3BC62"/>
+        <ellipse cx="67" cy="37" rx="10" ry="9.5" fill="#E3BC62"/>
+        <path d="M27 31 L47 37" fill="none" stroke-width="3.6"/>
+        <path d="M58 33 L79 29" fill="none" stroke-width="3.6"/>
+        <g fill="#1D2140" stroke="none">
+          <circle cx="39" cy="40" r="4.4"/><circle cx="66" cy="38" r="4.6"/>
+        </g>
+        <g fill="#fff" stroke="none"><circle cx="40.6" cy="38.2" r="1.5"/><circle cx="67.8" cy="36.2" r="1.6"/></g>
+        <g transform="rotate(-5 52 58)">
+          <rect x="35" y="46" width="34" height="23" rx="2" fill="#fff"/>
+          <path d="M35 47 L52 60 L69 47" fill="none" stroke-width="2.4"/>
+          <circle cx="52" cy="60" r="5.2" fill="#B3202B" stroke-width="2"/>
+        </g>
+        <path d="M37 102 q-3 7 1 8 q4 0 3 -8 M45 102 q-2 7 2 8 q4 0 2 -8 M58 102 q-2 7 2 8 q4 0 2 -8 M66 101 q0 7 4 7 q3 -2 0 -8" fill="#F1D78A" stroke-width="2.4"/>
+      </g>
+      <g fill="#1D2140"><circle cx="26" cy="74" r="1.3"/><circle cx="31" cy="82" r="1.3"/><circle cx="24" cy="86" r="1.3"/><circle cx="35" cy="92" r="1.3"/><circle cx="29" cy="97" r="1.3"/><circle cx="38" cy="78" r="1.3"/><circle cx="40" cy="88" r="1.3"/></g>
+    </symbol>
+
+    <!-- сова без письма (сидит, смотрит искоса) -->
+    <symbol id="owl-plain" viewBox="0 0 100 112">
+      <g stroke="#1D2140" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M82 56 C84 28 66 10 42 11 C18 12 6 32 9 60 C10 84 22 100 42 101 L60 101 C76 98 84 80 82 56 Z" fill="#fff"/>
+        <path d="M72 62 C84 78 83 96 70 105 C58 99 53 84 54 66 Z" fill="#fff"/>
+        <path d="M30 98 C22 90 16 78 14 66" fill="none" stroke-width="2.2" opacity=".5"/>
+        <path d="M30 20 C22 22 16 28 14 36 M54 14 C60 12 66 14 70 18" fill="none" stroke-width="2.4"/>
+        <ellipse cx="62" cy="39" rx="9.5" ry="9" fill="#E3BC62"/>
+        <ellipse cx="33" cy="37" rx="10" ry="9.5" fill="#E3BC62"/>
+        <path d="M73 31 L53 37" fill="none" stroke-width="3.6"/>
+        <path d="M42 33 L21 29" fill="none" stroke-width="3.6"/>
+        <g fill="#1D2140" stroke="none"><circle cx="61" cy="40" r="4.4"/><circle cx="34" cy="38" r="4.6"/></g>
+        <g fill="#fff" stroke="none"><circle cx="59.4" cy="38.2" r="1.5"/><circle cx="32.2" cy="36.2" r="1.6"/></g>
+        <path d="M44 48 L50 60 L56 48 Q50 44 44 48 Z" fill="#F29A1E" stroke-width="2.4"/>
+        <path d="M63 102 q3 7 -1 8 q-4 0 -3 -8 M55 102 q2 7 -2 8 q-4 0 -2 -8 M42 102 q2 7 -2 8 q-4 0 -2 -8 M34 101 q0 7 -4 7 q-3 -2 0 -8" fill="#F1D78A" stroke-width="2.4"/>
+      </g>
+      <g fill="#1D2140"><circle cx="74" cy="74" r="1.3"/><circle cx="69" cy="82" r="1.3"/><circle cx="76" cy="86" r="1.3"/><circle cx="65" cy="92" r="1.3"/><circle cx="71" cy="97" r="1.3"/><circle cx="62" cy="78" r="1.3"/><circle cx="60" cy="88" r="1.3"/></g>
+    </symbol>
+
+    <!-- сова летит с письмом -->
+    <symbol id="owl-fly" viewBox="0 0 220 130">
+      <g stroke="#1D2140" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" fill="#fff">
+        <path d="M88 66 C68 34 38 14 8 20 C14 26 12 34 7 40 C15 42 15 51 12 56 C21 58 21 67 21 73 C42 76 68 82 88 92 Z"/>
+        <path d="M80 70 C62 48 40 34 20 32 M80 80 C60 66 42 58 26 58" fill="none" stroke-width="2.2" opacity=".6"/>
+      </g>
+      <g transform="translate(220 0) scale(-1 1)"><g stroke="#1D2140" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" fill="#fff">
+        <path d="M88 66 C68 34 38 14 8 20 C14 26 12 34 7 40 C15 42 15 51 12 56 C21 58 21 67 21 73 C42 76 68 82 88 92 Z"/>
+        <path d="M80 70 C62 48 40 34 20 32 M80 80 C60 66 42 58 26 58" fill="none" stroke-width="2.2" opacity=".6"/>
+      </g></g>
+      <g stroke="#1D2140" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M80 46 C80 24 94 14 110 14 C126 14 140 24 140 46 C144 74 134 98 110 104 C86 98 76 74 80 46 Z" fill="#fff"/>
+        <path d="M86 24 C90 19 96 17 101 17 M134 24 C130 19 124 17 119 17" fill="none" stroke-width="2.4"/>
+        <ellipse cx="96" cy="44" rx="9" ry="8.5" fill="#E3BC62"/><ellipse cx="124" cy="44" rx="9" ry="8.5" fill="#E3BC62"/>
+        <path d="M85 37 L103 42 M135 37 L117 42" fill="none" stroke-width="3.4"/>
+        <g fill="#1D2140" stroke="none"><circle cx="97" cy="45" r="4.2"/><circle cx="123" cy="45" r="4.2"/></g>
+        <g fill="#fff" stroke="none"><circle cx="98.5" cy="43.4" r="1.4"/><circle cx="124.5" cy="43.4" r="1.4"/></g>
+        <g transform="rotate(-5 110 62)"><rect x="93" y="52" width="34" height="23" rx="2" fill="#fff"/><path d="M93 53 L110 66 L127 53" fill="none" stroke-width="2.4"/><circle cx="110" cy="66" r="5" fill="#B3202B" stroke-width="2"/></g>
+        <path d="M100 104 q-3 8 1 9 q4 0 3 -9 M112 104 q-2 8 2 9 q4 -1 2 -9" fill="#F1D78A" stroke-width="2.4"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+<div class="owls" aria-hidden="true">
+  <svg class="o o1" viewBox="0 0 220 130" style="left:1.7999999999999998%;top:3%;width:150px;height:89px"><use href="#owl-fly"/></svg>
+  <svg class="o o2" viewBox="0 0 100 112" style="right:2.4%;top:9%;width:100px;height:112px"><use href="#owl-sit"/></svg>
+  <svg class="o o3" viewBox="0 0 100 112" style="left:1.2%;top:15%;width:96px;height:108px"><use href="#owl-plain"/></svg>
+  <svg class="o o4" viewBox="0 0 220 130" style="right:1.7999999999999998%;top:22%;width:170px;height:100px"><use href="#owl-fly"/></svg>
+  <svg class="o o5" viewBox="0 0 100 112" style="left:2.4%;top:29%;width:96px;height:108px"><use href="#owl-sit"/></svg>
+  <svg class="o o6" viewBox="0 0 100 112" style="right:1.2%;top:36%;width:100px;height:112px"><use href="#owl-plain"/></svg>
+  <svg class="o o7" viewBox="0 0 220 130" style="left:1.7999999999999998%;top:43%;width:150px;height:89px"><use href="#owl-fly"/></svg>
+  <svg class="o o8" viewBox="0 0 100 112" style="right:2.4%;top:50%;width:96px;height:108px"><use href="#owl-sit"/></svg>
+  <svg class="o o9" viewBox="0 0 100 112" style="left:1.2%;top:57%;width:100px;height:112px"><use href="#owl-plain"/></svg>
+  <svg class="o o10" viewBox="0 0 220 130" style="right:1.7999999999999998%;top:65%;width:160px;height:95px"><use href="#owl-fly"/></svg>
+  <svg class="o o11" viewBox="0 0 100 112" style="left:2.4%;top:72%;width:100px;height:112px"><use href="#owl-sit"/></svg>
+  <svg class="o o12" viewBox="0 0 100 112" style="right:1.2%;top:79%;width:96px;height:108px"><use href="#owl-plain"/></svg>
+  <svg class="o o13" viewBox="0 0 220 130" style="left:1.7999999999999998%;top:86%;width:150px;height:89px"><use href="#owl-fly"/></svg>
+  <svg class="o o14" viewBox="0 0 100 112" style="right:2.4%;top:93%;width:100px;height:112px"><use href="#owl-sit"/></svg>
+</div>
+
 
 <div class="wrap">
   <div class="bunting" aria-hidden="true">
@@ -197,13 +342,25 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
   </div>
 
   <header class="hero">
+    <svg class="owl-hero" viewBox="0 0 100 112" aria-hidden="true"><use href="#owl-sit"/></svg>
     <div>
-      <div class="eyebrow">1 ноября 2026</div>
+      <div class="fete">
+        <div class="cal" aria-hidden="true"><span class="m">ноября</span><span class="d">7</span></div>
+        <div class="fete-txt">
+          <b>Празднуем 7 ноября</b>
+          <small>День рождения Мирана — 1 ноября, а праздник устраиваем 7-го</small>
+        </div>
+        <div class="fete-count" aria-live="polite"><span class="n" id="cdDays">…</span><span class="u" id="cdUnit">дней</span><span class="l" id="cdLabel">до праздника</span></div>
+        <div class="fete-bar" aria-hidden="true">
+          <span class="mk bd" id="cdBd"><i>🎂</i><em>1 ноября, день рождения</em></span>
+          <div class="trk"><div class="fill" id="cdFill"></div></div>
+          <span class="mk fin"><i>🎉</i><em>7 ноября, праздник</em></span>
+        </div>
+      </div>
       <p class="invite">Приглашаем на праздник!</p>
       <h1>Миранчику <span class="num">1</span> годик</h1>
       <p class="lead">Мы собрали то, что Мирану <b>правда пригодится</b> в ближайший год: игрушки по возрасту, вещи для движения, книжки, практичные мелочи и кое-что для мамы. Цены примерные, в сомах. Магазин и модель выбирайте сами.</p>
       <div class="meta">
-        <span class="tag" id="countdown">до праздника …</span>
         <span class="tag" id="freeCount">свободно …</span>
       </div>
     </div>
@@ -259,6 +416,25 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
           <ellipse cx="117" cy="190" rx="7" ry="9" fill="#D9822B" opacity=".85"/>
           <ellipse cx="116" cy="150" rx="6" ry="8" fill="#D9822B" opacity=".85"/>
           <ellipse cx="124" cy="124" rx="5" ry="6" fill="#D9822B" opacity=".85"/>
+          <!-- мантия Слизерина -->
+          <g class="cloak">
+            <!-- сама мантия -->
+            <path d="M104 150 L136 150 C172 168 204 190 218 228 L216 268 Q200 278 184 268 Q168 278 152 268 Q136 278 120 268 Q108 262 104 246 C98 214 100 180 104 150 Z" fill="#1E6B45"/>
+            <path d="M104 150 L136 150 C172 168 204 190 218 228 L216 238 C198 196 168 176 134 164 C118 160 108 160 102 166 Z" fill="#2E8B5C" opacity=".75"/>
+            <path d="M104 246 Q108 262 120 268 Q136 278 152 268 Q168 278 184 268 Q200 278 216 268" fill="none" stroke="#C9D2DC" stroke-width="5" stroke-linecap="round"/>
+            <path d="M104 150 C98 180 98 214 104 246" fill="none" stroke="#C9D2DC" stroke-width="4" stroke-linecap="round"/>
+            <path d="M104 150 L136 150" fill="none" stroke="#C9D2DC" stroke-width="5" stroke-linecap="round"/>
+            <!-- эмблема Слизерина: щит со змеёй -->
+            <g class="crest" transform="translate(126 186) scale(.5) translate(-166 -223)">
+              <path d="M146 194 L186 194 L186 224 Q186 242 166 252 Q146 242 146 224 Z" fill="#14502F" stroke="#C9D2DC" stroke-width="3.5" stroke-linejoin="round"/>
+              <path d="M172 204 C158 204 156 216 166 220 C176 224 176 236 160 238" fill="none" stroke="#E6EBF0" stroke-width="5.5" stroke-linecap="round"/>
+              <path d="M172 204 C158 204 156 216 166 220 C176 224 176 236 160 238" fill="none" stroke="#1E6B45" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="1 7"/>
+              <ellipse cx="177" cy="203" rx="6.5" ry="4.6" fill="#E6EBF0" transform="rotate(-16 177 203)"/>
+              <circle cx="179" cy="202" r="1.3" fill="#14502F"/>
+              <path d="M182.500 205 l5 2.600 M182.500 205 l4.600 -1" stroke="#E6EBF0" stroke-width="1.2" stroke-linecap="round"/>
+            </g>
+            <circle cx="112" cy="162" r="6" fill="#DCE3EA"/><circle cx="112" cy="162" r="2.6" fill="#1E6B45"/>
+          </g>
           <!-- голова -->
           <g transform="rotate(-12 100 92)">
             <!-- ухо -->
@@ -311,9 +487,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
     <h2>Пожалуйста, не дарите</h2>
     <ul>
       <li><b>Ходунки, прыгунки и джамперы.</b> Их запретил ортопед. <small>Такие вещи нагружают тазобедренные суставы, а мы за ними сейчас наблюдаем.</small></li>
-      <li><b>Каталки-толкалки и толокары «на сейчас».</b> Только когда Миран пойдёт сам, и только модели, где он стоит ногами на полу.</li>
       <li><b>Мелкие детали, магниты, батарейки-таблетки.</b> Он всё пробует на зуб.</li>
-      <li><b>Мягкие игрушки в большом количестве.</b> Одну любимую можно, а пятнадцать уже пылесборник 🙂</li>
     </ul>
   </aside>
 
@@ -330,6 +504,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
     <label for="fromName">Как вас зовут
       <input id="fromName" name="fromName" placeholder="Например: тётя Ануш" autocomplete="name" maxlength="100" required>
     </label>
+    <div class="name-hint" id="nameHint">Сначала укажите имя. Без него кнопка «Забронировать» не работает.</div>
     <div class="status" id="status" aria-live="polite"></div>
     <div class="row">
       <button class="btn primary" id="bookBtn" type="submit">Забронировать</button>
@@ -344,7 +519,7 @@ section.cat{margin-bottom:40px;--c:var(--coral)}
 /* ===== ДАННЫЕ ВИШЛИСТА =====
    Источник — Google Таблица «Вишлист Мирана — 1 год» (лист 1). Колонки ищутся по заголовкам:
    Название, Цена, Ссылка, Вариант (Точно такое / Можно похожее), Категория, Описание, Примечание,
-   Совместно (да), Скрыть (да), Поиск (запрос для WB/Ozon/Temu), Фото URL, Магазин, ID.
+   Совместно (да), Скрыть (да), Поиск (запрос для WB/Ozon/Temu), Фото URL, Магазин, ID, Порядок (число: меньше — выше в категории).
    ID связывает карточку с бронями в листе «Брони» — не менять у существующих строк.
    Если таблица недоступна, берётся снимок items.csv, сохранённый при последнем деплое. */
 const CATS = [
@@ -352,6 +527,7 @@ const CATS = [
   {id:"move", name:"Для движения", hint:"ползать, лазать, вставать"},
   {id:"book", name:"Книжки", hint:"картонные и тактильные"},
   {id:"prac", name:"Практичное", hint:"то, что точно пойдёт в дело"},
+  {id:"care", name:"Косметика и уход", hint:"купание, кожа, зубки"},
   {id:"mom",  name:"Для мамы", hint:"год Катерины тоже был непростым"},
 ];
 let ITEMS = [];
@@ -374,23 +550,33 @@ function parseCSV(text){
   return rows;
 }
 
+const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
+
+// цены: пробелы вокруг тире в диапазоне; разрыв строки возможен только после тире (второе значение уходит вниз)
+function fmtPrice(p){
+  const NB = "\u00A0";
+  return p.replace(/(\d)[ \u00A0](?=\d{3}(\D|$))/g, "$1" + NB)   // тысячи не разрываем
+          .replace(/\s*[–—-]\s*/g, NB + "– ");                   // «500 – 2 500»
+}
+
 function rowsToItems(rows){
   const head = (rows.shift() || []).map(h => h.trim().toLowerCase());
   const col = name => head.findIndex(h => h.startsWith(name));
   const C = {t:col("название"), p:col("цена"), u:col("ссылка"), pick:col("вариант"), cat:col("категория"), d:col("описание"),
-             note:col("примечание"), big:col("совместно"), hide:col("скрыть"), q:col("поиск"), img:col("фото url"), shop:col("магазин"), id:col("id")};
+             note:col("примечание"), big:col("совместно"), hide:col("скрыть"), q:col("поиск"), img:col("фото url"), shop:col("магазин"), id:col("id"), ord:col("порядок"), size:col("размер")};
   const get = (r, k) => C[k] >= 0 ? String(r[C[k]] || "").trim() : "";
   const yes = v => /^(да|yes|true|истина|1|\+)$/i.test(v);
   const catId = name => (CATS.find(c => c.name.toLowerCase() === name.toLowerCase()) || CATS[0]).id;
-  const shopName = u => /wildberries|wb\.ru/.test(u) ? "Wildberries" : /ozon/.test(u) ? "Ozon" : /yangkeduo|pinduoduo/.test(u) ? "Pinduoduo" : /temu/.test(u) ? "Temu" : "Ссылка";
   const out = [];
   rows.forEach(r => {
     const t = get(r,"t"); if (!t || yes(get(r,"hide"))) return;
     const u = get(r,"u"), pk = get(r,"pick").toLowerCase();
     let p = get(r,"p"); if (/^\d+$/.test(p.replace(/\s/g,""))) p = Number(p.replace(/\s/g,"")).toLocaleString("ru-RU");
+    p = fmtPrice(p);
     let id = get(r,"id");
     if (!id){ const m = u.match(/catalog\/(\d+)/); id = m ? "w"+m[1] : "h"+[...t].reduce((h,ch)=>(h*31+ch.charCodeAt(0))>>>0,7).toString(36); }
     out.push({ id, t, p, u, uName: get(r,"shop") || (u ? shopName(u) : ""), d: get(r,"d"), note: get(r,"note"),
+      ord: Number(get(r,"ord")) || 9999, size: get(r,"size"),
       cat: catId(get(r,"cat")), big: yes(get(r,"big")), q: get(r,"q"), img: get(r,"img"),
       pick: pk.startsWith("точно") ? "exact" : pk.startsWith("можно") ? "similar" : "" });
   });
@@ -458,10 +644,20 @@ function renderList(){
   groups.forEach(c => {
     let items = ITEMS.filter(i => inGroup(i, c.id));
     if (onlyFree) items = items.filter(i => !isTaken(i));
-    items.sort((a,b) => isTaken(a) - isTaken(b));
+    items.sort((a,b) => isTaken(a) - isTaken(b) || a.ord - b.ord);
     if (!items.length) return;
     const sec = el("section","cat cat-"+c.id);
+    { const ow = document.createElementNS("http://www.w3.org/2000/svg","svg"); ow.setAttribute("class","owl-deco"); ow.setAttribute("viewBox","0 0 100 112");
+      const k = CATS.indexOf(c); ow.style[k % 2 ? "left" : "right"] = "8px";
+      const u = document.createElementNS("http://www.w3.org/2000/svg","use"); u.setAttribute("href", k % 2 ? "#owl-plain" : "#owl-sit"); ow.append(u); sec.append(ow); }
     const h = el("div","cat-head"); const rw = el("div","ribbon-wrap"); rw.append(el("h2","ribbon",c.name)); h.append(rw, el("p",null,c.hint)); sec.append(h);
+    if (c.id === "book"){
+      const bn = el("aside","book-note"); bn.setAttribute("role","note");
+      bn.innerHTML = '<div class="bn-ico" aria-hidden="true">📚</div><div><b>Хотите подарить книжки в ассортименте, а их уже забронировали?</b>'
+        + '<p>Картонки, виммельбухи, книжки с окошками и так далее: каждую позицию мог взять только один человек. '
+        + 'Напишите нам, и мы дадим контакт того, кто забронировал. Договоритесь и подарите Мирану разные книжки.</p></div>';
+      sec.append(bn);
+    }
     const grid = el("div","grid");
     items.forEach(i => grid.append(card(i)));
     sec.append(grid); main.append(sec);
@@ -470,7 +666,7 @@ function renderList(){
   $("#freeCount").innerHTML = "свободно <strong>"+free+"</strong> из "+ITEMS.length;
 }
 
-const priceText = p => /\d/.test(p) ? p + " с" : p;  // «любая», «нет в наличии» — без валюты
+const priceText = p => /\d/.test(p) ? p + "\u00A0с" : p;  // «любая», «нет в наличии» — без валюты
 
 function card(i){
   const a = el("article","item cat-"+i.cat+(isTaken(i)?" taken":""));
@@ -482,17 +678,30 @@ function card(i){
   if (i.pick === "similar") tags.append(el("span","pick-tag similar","Можно похожую"));
   if (tags.childNodes.length) a.append(tags);
   const top = el("div","top"); top.append(el("h4",null,i.t)); if (i.p) top.append(el("span","price",priceText(i.p)));
-  a.append(top); if (i.d) a.append(el("p",null,i.d));
+  a.append(top);
+  // размер одежды: одинаковая заметная плашка у всех карточек с одеждой (колонка «Размер», варианты через |)
+  if (i.size){
+    const sz = el("div","sizes"); sz.append(el("span","sz-lab","Размер"));
+    i.size.split("|").map(x => x.trim()).filter(Boolean).forEach(x => sz.append(el("span","sz",x)));
+    a.append(sz);
+  }
+  if (i.d) a.append(el("p",null,i.d));
   if (i.note && !isTaken(i)) a.append(el("div","note",i.note));
   const f = el("div","foot");
   if (i.u && !isTaken(i)){
-    const d = el("a","shop",i.uName||"Ссылка"); d.href=i.u; d.target="_blank"; d.rel="noopener"; f.append(d);
+    // в колонке «Ссылка» можно несколько адресов через пробел: у каждого своя подпись по магазину
+    const urls = i.u.split(/\s+/).filter(Boolean);
+    urls.forEach(u => {
+      const d = el("a","shop", urls.length === 1 ? (i.uName||"Ссылка") : shopName(u)); d.href=u; d.target="_blank"; d.rel="noopener"; f.append(d);
+    });
   }
-  if (i.q && !isTaken(i)){
-    const w = el("a","shop","Wildberries"); w.href=WB(i.q); w.target="_blank"; w.rel="noopener";
-    const o = el("a","shop","Ozon"); o.href=OZ(i.q); o.target="_blank"; o.rel="noopener";
-    const m = el("a","shop","Temu"); m.href=TM(i.q); m.target="_blank"; m.rel="noopener";
-    f.append(w,o,m);
+  // «Хотим именно эту»: только ссылка на конкретный товар, без общих поисковых кнопок
+  if (i.q && !isTaken(i) && !(i.pick === "exact" && i.u)){
+    // не дублируем магазин, на который уже есть прямая ссылка на товар
+    const have = new Set((i.u ? i.u.split(/\s+/) : []).map(shopName));
+    [["Wildberries",WB],["Ozon",OZ],["Temu",TM]].filter(([n]) => !have.has(n)).forEach(([n,fn]) => {
+      const a2 = el("a","shop",n); a2.href=fn(i.q); a2.target="_blank"; a2.rel="noopener"; f.append(a2);
+    });
   }
   if (isTaken(i)){ const m = mine.has(i.id); f.append(el("span","taken-pill"+(m?" mine":""), m ? "✓ Забронировано вами" : "✓ Забронировано")); }
   else { const b = el("button","pick","Забронировать"); b.type="button"; b.onclick=()=>openSheet(i); f.append(b); }
@@ -506,12 +715,17 @@ function openSheet(i){
   current = i; setStatus("");
   $("#miniImg").src = i.img; $("#miniT").textContent = i.t; $("#miniP").textContent = /\d/.test(i.p) ? i.p + " сом" : i.p;
   try { $("#fromName").value = localStorage.getItem("wl-name") || ""; } catch(e){}
-  $("#bookBtn").disabled = false; $("#sheet").hidden = false; $("#fromName").focus();
+  syncBook(); $("#sheet").hidden = false; $("#fromName").focus();
 }
 function closeSheet(){ $("#sheet").hidden = true; }
+// бронь доступна только после ввода имени
+function syncBook(){
+  const ok = $("#fromName").value.trim().length > 0;
+  $("#bookBtn").disabled = !ok; $("#bookBtn").classList.toggle("need-name", !ok); $("#nameHint").hidden = ok;
+}
 let toastT;
 function toast(msg){ const el=$("#toast"); el.textContent=msg; el.hidden=false; clearTimeout(toastT); toastT=setTimeout(()=>el.hidden=true, 4000); }
-$("#fromName").addEventListener("input", () => { try{localStorage.setItem("wl-name",$("#fromName").value)}catch(e){} });
+$("#fromName").addEventListener("input", () => { try{localStorage.setItem("wl-name",$("#fromName").value)}catch(e){} syncBook(); });
 $("#closeBtn").onclick = closeSheet;
 $("#sheet").addEventListener("click", e => { if (e.target.id==="sheet") closeSheet(); });
 document.addEventListener("keydown", e => { if (e.key==="Escape") closeSheet(); });
@@ -534,10 +748,10 @@ $("#bookForm").addEventListener("submit", async e => {
       renderChips(); renderList();
       setStatus("Этот подарок только что забронировал кто-то другой. Выберите, пожалуйста, другой.", true);
     } else {
-      setStatus("Не получилось забронировать. Попробуйте ещё раз.", true); btn.disabled = false;
+      setStatus("Не получилось забронировать. Попробуйте ещё раз.", true); syncBook();
     }
   } catch(err){
-    setStatus("Нет связи с таблицей. Проверьте интернет и попробуйте ещё раз.", true); btn.disabled = false;
+    setStatus("Нет связи с таблицей. Проверьте интернет и попробуйте ещё раз.", true); syncBook();
   }
 });
 
@@ -545,10 +759,20 @@ $("#onlyFree").checked = onlyFree;
 $("#onlyFree").onchange = e => { onlyFree = e.target.checked; try{localStorage.setItem("wl-free", onlyFree?"1":"0")}catch(err){}; renderList(); };
 
 (function countdown(){
-  const bd = new Date(2026,10,1); const now = new Date(); now.setHours(0,0,0,0);
-  const d = Math.round((bd - now)/86400000);
+  // День рождения 1 ноября, праздник 7 ноября: таймер идёт до праздника
+  const start = new Date(2026,9,12), bday = new Date(2026,10,1), feast = new Date(2026,10,7);
+  const now = new Date(); now.setHours(0,0,0,0);
+  const day = 86400000, d = Math.round((feast - now)/day);
   const words = n => { const m10=n%10, m100=n%100; if(m10===1&&m100!==11) return "день"; if(m10>=2&&m10<=4&&(m100<12||m100>14)) return "дня"; return "дней"; };
-  $("#countdown").innerHTML = d>0 ? "до праздника <strong>"+d+"</strong> "+words(d) : d===0 ? "<strong>сегодня праздник!</strong>" : "праздник прошёл 🎉";
+  const old = $("#countdown");   // тематические копии
+  if (old) old.innerHTML = d>0 ? "до праздника 7 ноября <strong>"+d+"</strong> "+words(d) : d===0 ? "<strong>сегодня праздник!</strong>" : "праздник прошёл 🎉";
+  const n = $("#cdDays"); if (!n) return;
+  if (d>0){ n.textContent = d; $("#cdUnit").textContent = words(d); $("#cdLabel").textContent = "до праздника"; }
+  else if (d===0){ n.textContent = "Сегодня!"; $("#cdUnit").textContent = ""; $("#cdLabel").textContent = "наш праздник 🎉"; }
+  else { n.textContent = "🎉"; $("#cdUnit").textContent = ""; $("#cdLabel").textContent = "праздник прошёл"; }
+  const span = feast - start, pct = v => Math.max(0, Math.min(100, (v - start)/span*100));
+  $("#cdFill").style.width = pct(now) + "%";
+  $("#cdBd").style.left = pct(bday) + "%";
 })();
 
 (function decor(){
